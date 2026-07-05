@@ -15,7 +15,8 @@ html{background:var(--black);color:var(--text);font-family:var(--font-body);min-
 body{max-width:700px;margin:0 auto;padding:0 20px 80px}
 
 .site-header{padding:32px 0 24px;text-align:center;border-bottom:1px solid var(--border);margin-bottom:40px}
-.logo{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase}
+.logo{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;gap:10px}
+.logo img{height:30px;width:auto}
 .logo em{font-style:italic}
 .tagline{font-size:10px;letter-spacing:0.35em;text-transform:uppercase;color:var(--text-dim);margin-top:6px}
 
@@ -145,7 +146,10 @@ select option{background:var(--surface2);color:var(--text)}
 <div class="pantheon-grain" aria-hidden="true"></div>
 
 <header class="site-header" style="position:relative;z-index:2">
-  <div class="logo">Presen<em>cy</em></div>
+  <div class="logo">
+    <img src="assets/logo-mark.svg" alt="" width="30" height="34">
+    Presen<em>cy</em>
+  </div>
   <div class="tagline">Client Intake Form</div>
 </header>
 

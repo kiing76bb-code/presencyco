@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 72" fill="none" aria-label="Presency">
+  <defs>
+    <linearGradient id="pg" x1="8" y1="4" x2="56" y2="68" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#8A6B2A"/>
+      <stop offset="45%" stop-color="#D4AF5A"/>
+      <stop offset="100%" stop-color="#E8C97A"/>
+    </linearGradient>
+    <linearGradient id="pf" x1="32" y1="8" x2="32" y2="66" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#D4AF5A" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#D4AF5A" stop-opacity="0.04"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(0 0)">
+    <path d="M32 3 L54 13.5 V38.5 C54 54.5 44.5 64.5 32 69 C19.5 64.5 10 54.5 10 38.5 V13.5 Z"
+          fill="url(#pf)" stroke="url(#pg)" stroke-width="2.2" stroke-linejoin="round"/>
+    <path d="M2 36 H14 L18 27 L22 43 L26 24 L30 38 L34 30 L38 36 H50 L62 36"
+          stroke="url(#pg)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="58" cy="36" r="2.2" fill="#3DB87A"/>
+  </g>
+  <text x="78" y="46" font-family="'Cormorant Garamond', Georgia, serif" font-size="34" font-weight="300" letter-spacing="6" fill="#EDE9E1">PRESEN<tspan font-style="italic" fill="#D4AF5A">CY</tspan></text>
+</svg>

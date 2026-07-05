@@ -12,7 +12,7 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Presency">
-<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://presencyco.com/assets/presency-logo-mark.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Presency — Your Business. Always Present.">
 <meta name="twitter:description" content="Stop missing calls. Own the map. Get recommended by AI. Las Vegas small business automation.">
@@ -37,7 +37,7 @@
       "legalName": "Axis Creative LLC",
       "url": "https://presencyco.com/",
       "email": "hello@presencyco.com",
-      "logo": "https://presencyco.com/favicon.svg",
+      "logo": "https://presencyco.com/assets/logo-mark.svg",
       "sameAs": []
     },
     {
@@ -120,8 +120,9 @@ nav.scrolled{background:var(--black);border-bottom:1px solid var(--border)}
 section[id]{scroll-margin-top:80px;position:relative;z-index:2}
 .trust-bar{position:relative;z-index:2}
 footer{position:relative;z-index:2}
-.nav-logo{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;letter-spacing:0.12em;color:var(--gold);text-transform:uppercase;cursor:pointer;text-decoration:none}
-.nav-logo em{font-style:italic}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;letter-spacing:0.12em;color:var(--gold);text-transform:uppercase;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:12px}
+.nav-logo img{height:32px;width:auto;display:block}
+.nav-logo .logo-text em{font-style:italic}
 .nav-links{display:flex;gap:36px;list-style:none}
 .nav-links a{font-size:12px;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-muted);text-decoration:none;transition:color 0.3s}
 .nav-links a:hover{color:var(--gold)}
@@ -253,7 +254,8 @@ section{padding:100px 60px}
 .success-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:var(--text);margin-bottom:12px}
 .success-text{font-size:13px;color:var(--text-muted);line-height:1.7}
 footer{background:var(--surface);border-top:1px solid var(--border);padding:40px 60px;display:flex;align-items:center;justify-content:space-between}
-.footer-logo{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;letter-spacing:0.12em;color:var(--gold);text-transform:uppercase}
+.footer-logo{display:inline-flex;align-items:center;gap:10px;font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;letter-spacing:0.12em;color:var(--gold);text-transform:uppercase}
+.footer-logo img{height:24px;width:auto}
 .footer-copy{font-size:11px;color:var(--text-dim);letter-spacing:0.1em}
 .footer-tagline{font-size:11px;font-style:italic;font-family:'Cormorant Garamond',serif;color:var(--text-dim)}
 @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
@@ -286,7 +288,10 @@ footer{flex-direction:column;gap:12px;text-align:center;padding:28px 24px}
 <div class="pantheon-grain" aria-hidden="true"></div>
 
 <nav id="mainNav" class="pantheon-nav">
-  <a class="nav-logo" href="#">Presen<em>cy</em></a>
+  <a class="nav-logo" href="#">
+    <img src="assets/logo-mark.svg" alt="" width="32" height="36">
+    <span class="logo-text">Presen<em>cy</em></span>
+  </a>
   <ul class="nav-links">
     <li><a href="#services">Services</a></li>
     <li><a href="#roi">Your Loss</a></li>
@@ -590,7 +595,10 @@ footer{flex-direction:column;gap:12px;text-align:center;padding:28px 24px}
 </section>
 
 <footer>
-  <div class="footer-logo">Presency</div>
+  <div class="footer-logo">
+    <img src="assets/logo-mark.svg" alt="" width="24" height="27">
+    <span>Presency</span>
+  </div>
   <span class="footer-tagline">"Your Business. Always Present."</span>
   <span class="footer-copy">© 2026 Axis Creative LLC · Las Vegas, NV · <a href="/terms.html" style="color:var(--text-dim);text-decoration:none">Terms</a> · <a href="/privacy.html" style="color:var(--text-dim);text-decoration:none">Privacy</a></span>
 </footer>
