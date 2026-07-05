@@ -8,7 +8,106 @@
 <meta property="og:description" content="Stop missing calls. Own the map. Get recommended by AI. Trusted by Las Vegas small businesses.">
 <meta property="og:url" content="https://presencyco.com">
 <meta name="theme-color" content="#07080A">
+<link rel="canonical" href="https://presencyco.com/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Presency">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Presency — Your Business. Always Present.">
+<meta name="twitter:description" content="Stop missing calls. Own the map. Get recommended by AI. Las Vegas small business automation.">
 <title>Presency — Your Business. Always Present.</title>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://presencyco.com/#website",
+      "url": "https://presencyco.com/",
+      "name": "Presency",
+      "description": "Las Vegas small business automation — 24/7 revenue recovery, Google Business domination, reputation management, and AI search visibility.",
+      "publisher": { "@id": "https://presencyco.com/#organization" },
+      "inLanguage": "en-US"
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://presencyco.com/#organization",
+      "name": "Presency",
+      "legalName": "Axis Creative LLC",
+      "url": "https://presencyco.com/",
+      "email": "hello@presencyco.com",
+      "logo": "https://presencyco.com/favicon.svg",
+      "sameAs": []
+    },
+    {
+      "@type": "LocalBusiness",
+      "@id": "https://presencyco.com/#localbusiness",
+      "name": "Presency",
+      "description": "Digital front office automation for Las Vegas small businesses. Missed call text-back, Google Business optimization, review management, AI chat, and AI search visibility.",
+      "url": "https://presencyco.com/",
+      "email": "hello@presencyco.com",
+      "priceRange": "$497–$1397",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Las Vegas",
+        "addressRegion": "NV",
+        "addressCountry": "US"
+      },
+      "areaServed": {
+        "@type": "City",
+        "name": "Las Vegas"
+      },
+      "parentOrganization": { "@id": "https://presencyco.com/#organization" },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Presency Service Packages",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "name": "Starter",
+            "description": "24/7 Revenue Recovery + Google Business Domination",
+            "price": "497",
+            "priceCurrency": "USD",
+            "priceSpecification": {
+              "@type": "UnitPriceSpecification",
+              "price": "497",
+              "priceCurrency": "USD",
+              "unitText": "MONTH"
+            }
+          },
+          {
+            "@type": "Offer",
+            "name": "Presence",
+            "description": "Starter + Reputation Management + AI Chat Widget",
+            "price": "897",
+            "priceCurrency": "USD",
+            "priceSpecification": {
+              "@type": "UnitPriceSpecification",
+              "price": "897",
+              "priceCurrency": "USD",
+              "unitText": "MONTH"
+            }
+          },
+          {
+            "@type": "Offer",
+            "name": "Full Front Office",
+            "description": "Presence + AI Search Visibility + priority support",
+            "price": "1397",
+            "priceCurrency": "USD",
+            "priceSpecification": {
+              "@type": "UnitPriceSpecification",
+              "price": "1397",
+              "priceCurrency": "USD",
+              "unitText": "MONTH"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/pantheon.css">
@@ -333,7 +432,7 @@ footer{flex-direction:column;gap:12px;text-align:center;padding:28px 24px}
         <li>Email support</li>
       </ul>
       <!-- TODO: swap in new Stripe payment links at $497/$897 -->
-      <button class="btn-price" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get Started</button>
+      <button class="btn-price" onclick="selectPlan('Starter — $497/mo')">Get Started</button>
     </div>
     <div class="price-card featured pantheon-card">
       <div class="price-tier">Tier 02</div>
@@ -348,7 +447,7 @@ footer{flex-direction:column;gap:12px;text-align:center;padding:28px 24px}
         <li>Priority support</li>
       </ul>
       <!-- TODO: swap in new Stripe payment links at $497/$897 -->
-      <button class="btn-price" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get Started</button>
+      <button class="btn-price" onclick="selectPlan('Presence — $897/mo')">Get Started</button>
     </div>
     <div class="price-card pantheon-card">
       <div class="price-tier">Tier 03</div>
@@ -362,7 +461,7 @@ footer{flex-direction:column;gap:12px;text-align:center;padding:28px 24px}
         <li>Dedicated account manager</li>
         <li>Analytics dashboard access</li>
       </ul>
-      <button class="btn-price" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get Started</button>
+      <button class="btn-price" onclick="selectPlan('Full Front Office — $1,397/mo')">Get Started</button>
     </div>
   </div>
 </section>
@@ -497,6 +596,16 @@ footer{flex-direction:column;gap:12px;text-align:center;padding:28px 24px}
 </footer>
 
 <script>
+function selectPlan(label){
+  var sel=document.getElementById('fservice');
+  if(sel){
+    for(var i=0;i<sel.options.length;i++){
+      if(sel.options[i].text===label){sel.selectedIndex=i;break;}
+    }
+  }
+  document.getElementById('contact').scrollIntoView({behavior:'smooth'});
+}
+
 function calcROI(){
   var calls=parseFloat(document.getElementById('roiCalls').value)||0;
   var ticket=parseFloat(document.getElementById('roiTicket').value)||0;
@@ -504,6 +613,14 @@ function calcROI(){
   document.getElementById('roiLoss').textContent='$'+monthly.toLocaleString();
 }
 calcROI();
+
+(function(){
+  var params=new URLSearchParams(window.location.search);
+  var plan=params.get('plan');
+  if(plan==='starter')selectPlan('Starter — $497/mo');
+  else if(plan==='presence')selectPlan('Presence — $897/mo');
+  else if(plan==='ffo'||plan==='full_front_office')selectPlan('Full Front Office — $1,397/mo');
+})();
 
 function sharePresency(){
   var text='Presency helps Las Vegas small businesses stop missing calls and own their Google presence. Check them out:';
