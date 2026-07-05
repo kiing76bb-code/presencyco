@@ -1,0 +1,86 @@
+/**
+ * Presency Design Tokens v2
+ * Psychology: trusted operator · always-on · stop the bleed
+ * Import in every HTML page: <link rel="stylesheet" href="/css/tokens.css">
+ */
+
+:root {
+  /* ── Foundation (authority + focus) ─────────────────────────────
+     Deep charcoal, not pure black — easier on eyes, feels operational
+     not nightclub. Signals "we run systems," not "we sell hype."
+  */
+  --black: #07080A;
+  --surface: #0E0F12;
+  --surface-raised: #15171C;
+  --surface-overlay: #1C1F26;
+  --border: #2A2E38;
+  --border-subtle: #1F2229;
+
+  /* ── Text (warm, human, readable) ───────────────────────────────
+     Off-white with warmth — approachable for shop owners, not SaaS cold.
+  */
+  --text: #EDE9E1;
+  --text-muted: #9A968E;
+  --text-dim: #5C5954;
+
+  /* ── Primary: Presency Gold (investment, Vegas premium, CTA) ────
+     Slightly lifted from v1 for WCAG contrast on dark surfaces.
+     Use for: logo, primary buttons, prices, key headlines.
+  */
+  --gold: #D4AF5A;
+  --gold-light: #E8C97A;
+  --gold-dim: #8A6B2A;
+  --gold-glow: rgba(212, 175, 90, 0.12);
+  --gold-border: rgba(212, 175, 90, 0.28);
+
+  /* ── Trust: Sage (credibility, reviews, verification) ───────────
+     Muted green-gray — trust without "hospital" or "bank" blue.
+     Use for: checkmarks, GBP verified, review stats, testimonial accents.
+  */
+  --trust: #7BA38C;
+  --trust-muted: rgba(123, 163, 140, 0.15);
+  --trust-border: rgba(123, 163, 140, 0.35);
+
+  /* ── Live: Signal Green (24/7, always present, active) ──────────
+     Reserved for "always on" indicators — pulse dots, status badges.
+     Never use for CTAs (competes with gold).
+  */
+  --live: #3DB87A;
+  --live-muted: rgba(61, 184, 122, 0.12);
+  --live-pulse: rgba(61, 184, 122, 0.45);
+
+  /* ── Urgency: Desert Copper (loss math, ROI bleed) ──────────────
+     Vegas desert warmth + financial heat. NOT alarm red — shop owners
+     already feel stressed; copper says "money leaving" without panic.
+     Use for: ROI calculator loss output, stat callouts about missed revenue.
+  */
+  --urgency: #C17B5C;
+  --urgency-muted: rgba(193, 123, 92, 0.12);
+  --urgency-border: rgba(193, 123, 92, 0.35);
+
+  /* ── Axis Platinum (dividers, luxury detail, secondary UI) ──────
+     From Axis Creative brand — subtle premium without more gold noise.
+  */
+  --platinum: #C0BAAF;
+  --platinum-muted: rgba(192, 186, 175, 0.12);
+
+  /* ── Semantic (system feedback only) ──────────────────────────── */
+  --success: #3DB87A;
+  --warning: #D4AF5A;
+  --error: #D4645A;
+
+  /* ── Typography families (reference) ───────────────────────────── */
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Syne', system-ui, sans-serif;
+
+  /* ── Motion ───────────────────────────────────────────────────── */
+  --ease-lux: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ── Legacy aliases (existing HTML compat) ──────────────────────── */
+  --surface2: var(--surface-raised);
+  --surface3: var(--surface-overlay);
+  --border-gold: var(--gold-border);
+  --gold-dim: var(--gold-glow);
+  --green: var(--live);
+  --red: var(--error);
+}

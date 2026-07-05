@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Presency — Las Vegas small business automation. 24/7 revenue recovery, Google Business domination, reputation management, AI chat, and AI search visibility. Your Business. Always Present.">
+<meta property="og:title" content="Presency — Your Business. Always Present.">
+<meta property="og:description" content="Stop missing calls. Own the map. Get recommended by AI. Trusted by Las Vegas small businesses.">
+<meta property="og:url" content="https://presencyco.com">
+<meta name="theme-color" content="#07080A">
+<title>Presency — Your Business. Always Present.</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/pantheon.css">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--text);font-family:var(--font-body);overflow-x:hidden}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 60px;display:flex;align-items:center;justify-content:space-between;transition:all 0.4s ease}
+nav.scrolled{background:var(--black);border-bottom:1px solid var(--border)}
+section[id]{scroll-margin-top:80px;position:relative;z-index:2}
+.trust-bar{position:relative;z-index:2}
+footer{position:relative;z-index:2}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;letter-spacing:0.12em;color:var(--gold);text-transform:uppercase;cursor:pointer;text-decoration:none}
+.nav-logo em{font-style:italic}
+.nav-links{display:flex;gap:36px;list-style:none}
+.nav-links a{font-size:12px;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-muted);text-decoration:none;transition:color 0.3s}
+.nav-links a:hover{color:var(--gold)}
+.nav-cta{font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--black);background:var(--gold);border:none;padding:10px 24px;cursor:pointer;transition:all 0.3s}
+.nav-cta:hover{background:var(--gold-light)}
+.nav-mobile-btn{display:none;background:none;border:none;color:var(--gold);font-size:22px;cursor:pointer}
+#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:120px 60px 80px;text-align:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 40%,var(--gold-glow) 0%,transparent 70%);pointer-events:none}
+.live-badge{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--live);background:var(--live-muted);border:1px solid var(--trust-border);padding:8px 16px;margin-bottom:24px;animation:fadeUp 0.8s ease both}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--live);box-shadow:0 0 8px var(--live-pulse);animation:livePulse 2s ease infinite}
+.hero-eyebrow{font-size:11px;font-weight:600;letter-spacing:0.35em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;animation:fadeUp 0.8s 0.05s ease both}
+.hero-headline{font-family:var(--font-display);font-size:clamp(52px,7vw,96px);font-weight:300;line-height:1.05;color:var(--text);margin-bottom:12px;animation:fadeUp 0.8s 0.1s ease both}
+.hero-headline em{font-style:italic;color:var(--gold)}
+.hero-tagline{font-size:13px;font-weight:400;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-muted);margin-bottom:52px;animation:fadeUp 0.8s 0.2s ease both}
+.hero-actions{display:flex;gap:16px;align-items:center;animation:fadeUp 0.8s 0.3s ease both}
+.btn-primary{font-size:12px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--black);background:var(--gold);border:none;padding:16px 40px;cursor:pointer;transition:all 0.3s}
+.btn-primary:hover{background:var(--gold-light);transform:translateY(-1px)}
+.btn-ghost{font-size:12px;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-muted);background:transparent;border:1px solid var(--border);padding:16px 40px;cursor:pointer;transition:all 0.3s}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+.hero-scroll{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px}
+.hero-scroll span{font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--text-dim)}
+.scroll-line{width:1px;height:48px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollPulse 2s ease infinite}
+.trust-bar{padding:28px 60px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:center;gap:48px;background:var(--surface);flex-wrap:wrap}
+.trust-item{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted)}
+.trust-dot{width:5px;height:5px;border-radius:50%;background:var(--trust);flex-shrink:0;box-shadow:0 0 6px var(--trust-muted)}
+section{padding:100px 60px}
+.section-label{font-size:11px;font-weight:600;letter-spacing:0.35em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:block}
+.section-title{font-family:var(--font-display);font-size:clamp(36px,4vw,58px);font-weight:300;line-height:1.1;color:var(--text);margin-bottom:20px}
+.service-proof{font-size:11px;color:var(--trust);margin-top:14px;line-height:1.6;display:flex;align-items:flex-start;gap:6px}
+.service-proof::before{content:'✓';font-weight:700;flex-shrink:0}
+.service-tag-live{display:inline-block;margin-top:16px;font-size:10px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--live);padding:6px 14px;border:1px solid var(--trust-border);background:var(--live-muted)}
+.service-tag{display:inline-block;margin-top:16px;font-size:10px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--trust);padding:6px 14px;border:1px solid var(--trust-border);background:var(--trust-muted)}
+.service-tag-gold{display:inline-block;margin-top:16px;font-size:10px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);padding:6px 14px;border:1px solid var(--gold-border)}
+.section-title em{font-style:italic;color:var(--gold)}
+.section-sub{font-size:15px;line-height:1.75;color:var(--text-muted);max-width:520px}
+#services{background:var(--surface)}
+.services-header{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:72px}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1px;background:var(--border)}
+.service-card{background:var(--surface);padding:44px 40px;position:relative;cursor:default;transition:all 0.4s ease;overflow:hidden}
+.service-card::before{content:'';position:absolute;top:0;left:0;width:2px;height:0;background:var(--gold);transition:height 0.4s ease}
+.service-card:hover{background:var(--surface2)}
+.service-card:hover::before{height:100%}
+.service-num{font-size:11px;font-weight:600;letter-spacing:0.3em;color:var(--text-dim);margin-bottom:28px}
+.service-icon{font-size:28px;margin-bottom:20px;display:block}
+.service-name{font-family:var(--font-display);font-size:24px;font-weight:400;color:var(--text);margin-bottom:14px;line-height:1.2}
+.service-desc{font-size:13px;line-height:1.8;color:var(--text-muted)}
+#roi{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.roi-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;max-width:1000px;margin:0 auto}
+.roi-calc{background:var(--surface-raised);border:1px solid var(--border);padding:40px;position:relative}
+.roi-calc::before{content:'';position:absolute;top:-1px;left:32px;right:32px;height:2px;background:linear-gradient(to right,transparent,var(--urgency),transparent)}
+.roi-field{margin-bottom:20px}
+.roi-field label{display:block;font-size:10px;font-weight:600;letter-spacing:0.25em;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px}
+.roi-field input{width:100%;background:var(--surface-overlay);border:1px solid var(--border);color:var(--text);font-family:var(--font-body);font-size:18px;font-weight:600;padding:14px 16px;outline:none;transition:border-color 0.3s}
+.roi-field input:focus{border-color:var(--gold)}
+.roi-result{margin-top:28px;padding-top:28px;border-top:1px solid var(--border)}
+.roi-result-label{font-size:10px;font-weight:600;letter-spacing:0.25em;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px}
+.roi-loss{font-size:clamp(36px,5vw,52px);font-weight:700;color:var(--urgency);line-height:1;letter-spacing:-0.02em}
+.roi-compare{font-size:13px;color:var(--text-muted);margin-top:12px;line-height:1.7}
+.roi-compare strong{color:var(--gold)}
+.roi-trust{display:flex;flex-direction:column;gap:14px;margin-top:28px}
+.roi-trust-item{font-size:12px;color:var(--trust);display:flex;align-items:center;gap:8px}
+.roi-trust-item::before{content:'✓';font-weight:700}
+#social-proof{background:var(--black)}
+#social-proof .section-title,.proof-grid{text-align:center}
+.proof-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);max-width:1000px;margin:48px auto 0}
+.proof-card{background:var(--surface);padding:36px 32px;text-align:center}
+.proof-stat{font-family:var(--font-display);font-size:42px;font-weight:300;color:var(--gold);line-height:1;margin-bottom:8px}
+.proof-label{font-size:11px;color:var(--text-muted);line-height:1.6;letter-spacing:0.05em}
+.proof-quote{font-family:var(--font-display);font-size:20px;font-style:italic;font-weight:300;line-height:1.55;color:var(--text);max-width:640px;margin:0 auto 16px}
+.proof-attribution{font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--trust)}
+.share-cta{display:inline-flex;align-items:center;gap:8px;margin-top:32px;font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold-border);padding:12px 24px;cursor:pointer;background:transparent;transition:all 0.3s}
+.share-cta:hover{background:var(--gold-glow);border-color:var(--gold)}
+#pricing{background:var(--black)}
+.pricing-header{text-align:center;margin-bottom:72px}
+.pricing-header .section-sub{margin:0 auto}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);max-width:1100px;margin:0 auto}
+.price-card{background:var(--surface);padding:52px 40px;display:flex;flex-direction:column;position:relative}
+.price-card.featured{background:var(--surface2);border-top:2px solid var(--gold)}
+.price-card.featured::after{content:'Most Popular';position:absolute;top:-1px;right:32px;font-size:9px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;background:var(--gold);color:var(--black);padding:4px 12px}
+.price-tier{font-size:11px;font-weight:600;letter-spacing:0.3em;text-transform:uppercase;color:var(--text-dim);margin-bottom:20px}
+.price-name{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--text);margin-bottom:8px}
+.price-desc{font-size:13px;color:var(--text-muted);margin-bottom:36px;line-height:1.7}
+.price-amount{margin-bottom:40px}
+.price-dollar{font-size:48px;font-weight:700;color:var(--gold);line-height:1;letter-spacing:-0.02em}
+.price-period{font-size:12px;color:var(--text-dim);letter-spacing:0.1em;margin-top:4px}
+.price-features{list-style:none;flex:1;margin-bottom:44px}
+.price-features li{font-size:13px;color:var(--text-muted);padding:10px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;line-height:1.5}
+.price-features li::before{content:'✓';color:var(--trust);font-weight:700;font-size:12px;flex-shrink:0}
+.btn-price{font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;padding:16px 32px;border:1px solid var(--border-gold);color:var(--gold);background:transparent;cursor:pointer;transition:all 0.3s;width:100%}
+.btn-price:hover,.price-card.featured .btn-price{background:var(--gold);color:var(--black);border-color:var(--gold)}
+#about{background:var(--surface)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center}
+.about-visual{position:relative;height:500px}
+.about-box-main{position:absolute;inset:0;border:1px solid var(--border-gold);background:var(--surface2)}
+.about-box-accent{position:absolute;top:40px;left:40px;right:-40px;bottom:-40px;border:1px solid var(--border);background:var(--surface3);z-index:-1}
+.about-inner{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:52px;text-align:center}
+.about-big{font-family:'Cormorant Garamond',serif;font-size:96px;font-weight:300;color:var(--gold);opacity:0.15;line-height:1;margin-bottom:-20px}
+.about-quote{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;font-weight:300;line-height:1.6;color:var(--text)}
+.about-stat{margin-top:40px;padding-top:40px;border-top:1px solid var(--border);width:100%}
+.about-stat-num{font-size:42px;font-weight:700;color:var(--live);letter-spacing:-0.02em;display:block}
+.about-stat-label{font-size:11px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-dim)}
+.about-content{display:flex;flex-direction:column;gap:28px}
+.about-point{padding:28px 32px;border:1px solid var(--border);transition:border-color 0.3s}
+.about-point:hover{border-color:var(--border-gold)}
+.about-point-title{font-size:14px;font-weight:600;letter-spacing:0.08em;color:var(--text);margin-bottom:8px}
+.about-point-text{font-size:13px;line-height:1.75;color:var(--text-muted)}
+#contact{background:var(--black)}
+.contact-wrap{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.contact-form-wrap{background:var(--surface);border:1px solid var(--border);padding:52px}
+.form-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--text);margin-bottom:32px}
+.form-group{margin-bottom:20px}
+.form-group label{display:block;font-size:10px;font-weight:600;letter-spacing:0.25em;text-transform:uppercase;color:var(--text-dim);margin-bottom:10px}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:'Syne',sans-serif;font-size:14px;padding:14px 18px;outline:none;transition:border-color 0.3s;appearance:none}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--gold)}
+.form-group textarea{height:100px;resize:none}
+.form-group select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23D4AF5A'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center}
+.btn-submit{width:100%;font-size:12px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--black);background:var(--gold);border:none;padding:18px;cursor:pointer;transition:all 0.3s;margin-top:8px}
+.btn-submit:hover{background:var(--gold-light)}
+.contact-info-title{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;line-height:1.2;color:var(--text);margin-bottom:24px}
+.contact-info-title em{font-style:italic;color:var(--gold)}
+.contact-info-text{font-size:14px;line-height:1.9;color:var(--text-muted);margin-bottom:48px}
+.contact-detail{display:flex;flex-direction:column;gap:20px}
+.contact-item{display:flex;flex-direction:column;gap:4px}
+.contact-item-label{font-size:10px;font-weight:600;letter-spacing:0.3em;text-transform:uppercase;color:var(--text-dim)}
+.contact-item-val{font-size:14px;color:var(--gold)}
+.form-success{display:none;text-align:center;padding:40px 20px}
+.form-success.visible{display:block}
+.success-icon{font-size:48px;color:var(--gold);margin-bottom:16px}
+.success-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:var(--text);margin-bottom:12px}
+.success-text{font-size:13px;color:var(--text-muted);line-height:1.7}
+footer{background:var(--surface);border-top:1px solid var(--border);padding:40px 60px;display:flex;align-items:center;justify-content:space-between}
+.footer-logo{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;letter-spacing:0.12em;color:var(--gold);text-transform:uppercase}
+.footer-copy{font-size:11px;color:var(--text-dim);letter-spacing:0.1em}
+.footer-tagline{font-size:11px;font-style:italic;font-family:'Cormorant Garamond',serif;color:var(--text-dim)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scrollPulse{0%,100%{opacity:0.4}50%{opacity:1}}
+@keyframes livePulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.85)}}
+@media(max-width:900px){
+nav{padding:20px 24px}
+.nav-links{display:none}
+.nav-mobile-btn{display:block}
+section{padding:64px 24px}
+.trust-bar{gap:24px;padding:20px 24px}
+.services-header{grid-template-columns:1fr;gap:24px}
+.pricing-grid{grid-template-columns:1fr}
+.price-card.featured{margin-top:24px}
+.about-grid{grid-template-columns:1fr;gap:40px}
+.about-visual{height:280px}
+.contact-wrap{grid-template-columns:1fr;gap:40px}
+.roi-grid{grid-template-columns:1fr;gap:32px}
+.proof-grid{grid-template-columns:1fr}
+footer{flex-direction:column;gap:12px;text-align:center;padding:28px 24px}
+.hero-actions{flex-direction:column;width:100%}
+.btn-primary,.btn-ghost{width:100%;text-align:center}
+}
+</style>
+</head>
+<body class="pantheon-root">
+
+<svg class="pantheon-constellation" id="pantheonConstellation" aria-hidden="true"></svg>
+<div class="pantheon-mesh" aria-hidden="true"></div>
+<div class="pantheon-grain" aria-hidden="true"></div>
+
+<nav id="mainNav" class="pantheon-nav">
+  <a class="nav-logo" href="#">Presen<em>cy</em></a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#roi">Your Loss</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-cta pantheon-btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get Started</button>
+  <button class="nav-mobile-btn" onclick="toggleMobileMenu()" aria-label="Menu">☰</button>
+</nav>
+
+<section id="hero" class="pantheon-hero">
+  <div class="hero-bg"></div>
+  <div class="live-badge"><span class="live-dot"></span> Systems Active 24/7</div>
+  <span class="hero-eyebrow">Las Vegas Small Business Automation</span>
+  <h1 class="hero-headline">Your Business.<br><em>Always Present.</em></h1>
+  <p class="hero-tagline">Revenue Recovery · Google Domination · AI Visibility</p>
+  <div class="hero-actions">
+    <button class="btn-primary pantheon-btn-primary" onclick="document.getElementById('roi').scrollIntoView({behavior:'smooth'})">See What You're Losing</button>
+    <button class="btn-ghost" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Book Free Consultation</button>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<div class="trust-bar">
+  <div class="trust-item"><div class="trust-dot"></div>No Contracts</div>
+  <div class="trust-item"><div class="trust-dot"></div>Las Vegas Owned</div>
+  <div class="trust-item"><div class="trust-dot"></div>Live in 3 Days</div>
+  <div class="trust-item"><div class="trust-dot"></div>Cancel Anytime</div>
+  <div class="trust-item"><div class="trust-dot"></div>Free Consultation</div>
+</div>
+
+<section id="services" class="pantheon-reveal">
+  <div class="services-header">
+    <div>
+      <span class="section-label">What We Do</span>
+      <h2 class="section-title">Five systems.<br><em>One front office.</em><br>Always on.</h2>
+    </div>
+    <p class="section-sub">Every service is built for trust — your phone line, your Google reputation, and your reviews handled with care while you run your business.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card pantheon-card">
+      <div class="service-num">01</div>
+      <span class="service-icon"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="44" height="44"><rect x="14" y="4" width="20" height="40" rx="3" stroke="#D4AF5A" stroke-width="1.5"/><line x1="14" y1="36" x2="34" y2="36" stroke="#D4AF5A" stroke-width="1.5"/><circle cx="24" cy="41" r="1.5" fill="#D4AF5A"/><path d="M8 28 Q4 24 8 20" stroke="#3DB87A" stroke-width="1.5" stroke-linecap="round" fill="none"/><path d="M5 31 Q-1 24 5 17" stroke="#3DB87A" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.5"/></svg></span>
+      <h3 class="service-name">24/7 Revenue Recovery</h3>
+      <p class="service-desc">Every missed call triggers an instant text with your booking link — even after hours. Stop losing leads to voicemail.</p>
+      <p class="service-proof">85% of voicemail callers never call back</p>
+      <span class="service-tag-live">24/7 Active</span>
+    </div>
+    <div class="service-card pantheon-card">
+      <div class="service-num">02</div>
+      <span class="service-icon"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="44" height="44"><path d="M24 4C17.373 4 12 9.373 12 16C12 24 24 44 24 44C24 44 36 24 36 16C36 9.373 30.627 4 24 4Z" stroke="#D4AF5A" stroke-width="1.5"/><circle cx="24" cy="16" r="5" stroke="#7BA38C" stroke-width="1.5"/></svg></span>
+      <h3 class="service-name">Google Business Domination</h3>
+      <p class="service-desc">Weekly Google Posts, photo strategy, verification, and NAP hygiene — so customers find you first on the map.</p>
+      <p class="service-proof">53% of consumers see your GBP before your website</p>
+      <span class="service-tag">Map Presence</span>
+    </div>
+    <div class="service-card pantheon-card">
+      <div class="service-num">03</div>
+      <span class="service-icon"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="44" height="44"><polygon points="24,4 29,18 44,18 32,27 37,42 24,33 11,42 16,27 4,18 19,18" stroke="#7BA38C" stroke-width="1.5" stroke-linejoin="round"/></svg></span>
+      <h3 class="service-name">Reputation Management</h3>
+      <p class="service-desc">Automated review requests plus AI-drafted responses to every review — warm, on-brand, and always professional.</p>
+      <p class="service-proof">97% of consumers read review responses before choosing</p>
+      <span class="service-tag">Full Review Loop</span>
+    </div>
+    <div class="service-card pantheon-card">
+      <div class="service-num">04</div>
+      <span class="service-icon"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="44" height="44"><path d="M6 8 H42 V32 H28 L24 40 L20 32 H6 Z" stroke="#D4AF5A" stroke-width="1.5" stroke-linejoin="round"/></svg></span>
+      <h3 class="service-name">AI Chat Widget</h3>
+      <p class="service-desc">A trained AI assistant on your website that answers questions, books appointments, and captures leads around the clock.</p>
+      <p class="service-proof">65% of consumers prefer messaging over calling</p>
+      <span class="service-tag-live">24/7 Coverage</span>
+    </div>
+    <div class="service-card pantheon-card">
+      <div class="service-num">05</div>
+      <span class="service-icon"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="44" height="44"><circle cx="24" cy="24" r="16" stroke="#D4AF5A" stroke-width="1.5"/><path d="M16 28 Q24 14 32 28" stroke="#7BA38C" stroke-width="1.5" fill="none"/><circle cx="18" cy="20" r="2" fill="#D4AF5A"/><circle cx="30" cy="20" r="2" fill="#D4AF5A"/></svg></span>
+      <h3 class="service-name">AI Search Visibility</h3>
+      <p class="service-desc">Get recommended by Google AI and ChatGPT. We optimize the signals AI engines use to suggest local businesses.</p>
+      <p class="service-proof">31% of consumers now ask ChatGPT for business recommendations</p>
+      <span class="service-tag-gold">Vegas Exclusive</span>
+    </div>
+    <div class="service-card" style="display:flex;align-items:center;justify-content:center;text-align:center;cursor:default">
+      <div>
+        <p style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--text);margin-bottom:16px;font-style:italic">Ready to be present?</p>
+        <button class="btn-primary pantheon-btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Book Free Consultation</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="pantheon-divider" aria-hidden="true"></div>
+
+<section id="roi" class="pantheon-reveal">
+  <div class="roi-grid">
+    <div>
+      <span class="section-label">The Loss Math</span>
+      <h2 class="section-title">How much is<br><em>silence</em> costing you?</h2>
+      <p class="section-sub">Most shop owners don't know their number until they see it. This is the same calculation our team walks through on every consultation.</p>
+      <div class="roi-trust">
+        <div class="roi-trust-item">62% of SMB calls go unanswered</div>
+        <div class="roi-trust-item">85% of voicemail callers never call back</div>
+        <div class="roi-trust-item">Presency Starter costs less than one lost job</div>
+      </div>
+    </div>
+    <div class="roi-calc pantheon-roi pantheon-rim-top">
+      <div class="roi-field">
+        <label for="roiCalls">Missed calls per week</label>
+        <input type="number" id="roiCalls" value="12" min="0" oninput="calcROI()">
+      </div>
+      <div class="roi-field">
+        <label for="roiTicket">Average job value ($)</label>
+        <input type="number" id="roiTicket" value="850" min="0" oninput="calcROI()">
+      </div>
+      <div class="roi-result">
+        <div class="roi-result-label">Estimated monthly revenue lost</div>
+        <div class="roi-loss" id="roiLoss">$0</div>
+        <p class="roi-compare">Presency Starter: <strong>$497/mo</strong> — stop the bleed before it compounds.</p>
+      </div>
+      <button class="btn-primary pantheon-btn-primary" style="width:100%;margin-top:24px" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get My Free Audit →</button>
+    </div>
+  </div>
+</section>
+
+<section id="pricing" class="pantheon-reveal">
+  <div class="pricing-header">
+    <span class="section-label">Investment</span>
+    <h2 class="section-title">Clear pricing.<br><em>Real results.</em></h2>
+    <p class="section-sub">No contracts. No surprises. Cancel any time — but you won't want to.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="price-card pantheon-card">
+      <div class="price-tier">Tier 01</div>
+      <div class="price-name">Starter</div>
+      <p class="price-desc">Stop the leak. Own the map. The essential stack for businesses ready to recover revenue.</p>
+      <div class="price-amount"><div class="price-dollar">$497</div><div class="price-period">per month</div></div>
+      <ul class="price-features">
+        <li>24/7 Revenue Recovery</li>
+        <li>Google Business Domination</li>
+        <li>Monthly performance report</li>
+        <li>Email support</li>
+      </ul>
+      <!-- TODO: swap in new Stripe payment links at $497/$897 -->
+      <button class="btn-price" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get Started</button>
+    </div>
+    <div class="price-card featured pantheon-card">
+      <div class="price-tier">Tier 02</div>
+      <div class="price-name">Presence</div>
+      <p class="price-desc">Every call answered. Every review handled. The full front-facing suite for serious growth.</p>
+      <div class="price-amount"><div class="price-dollar">$897</div><div class="price-period">per month</div></div>
+      <ul class="price-features">
+        <li>Everything in Starter</li>
+        <li>Reputation Management</li>
+        <li>AI Chat Widget</li>
+        <li>Bi-weekly check-in calls</li>
+        <li>Priority support</li>
+      </ul>
+      <!-- TODO: swap in new Stripe payment links at $497/$897 -->
+      <button class="btn-price" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get Started</button>
+    </div>
+    <div class="price-card pantheon-card">
+      <div class="price-tier">Tier 03</div>
+      <div class="price-name">Full Front Office</div>
+      <p class="price-desc">Complete front office. Get recommended by Google AI and ChatGPT — nobody else in Vegas offers this.</p>
+      <div class="price-amount"><div class="price-dollar">$1,397</div><div class="price-period">per month</div></div>
+      <ul class="price-features">
+        <li>Everything in Presence</li>
+        <li>AI Search Visibility</li>
+        <li>Monthly strategy session</li>
+        <li>Dedicated account manager</li>
+        <li>Analytics dashboard access</li>
+      </ul>
+      <button class="btn-price" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get Started</button>
+    </div>
+  </div>
+</section>
+
+<section id="social-proof" class="pantheon-reveal">
+  <div style="text-align:center;max-width:720px;margin:0 auto">
+    <span class="section-label">Trusted in Las Vegas</span>
+    <h2 class="section-title">Built for owners who<br><em>tell other owners.</em></h2>
+    <p class="proof-quote">"I didn't realize how many calls I was missing until Presency showed me the numbers. Now my phone works for me even when I'm on a job."</p>
+    <p class="proof-attribution">— Home Services Owner, Las Vegas</p>
+    <button class="share-cta" onclick="sharePresency()">Share Presency with a Business Owner →</button>
+  </div>
+  <div class="proof-grid">
+    <div class="proof-card pantheon-card pantheon-stat">
+      <div class="proof-stat">62%</div>
+      <div class="proof-label">of SMB calls go unanswered — you're not alone, and it's fixable</div>
+    </div>
+    <div class="proof-card pantheon-card pantheon-stat">
+      <div class="proof-stat">97%</div>
+      <div class="proof-label">of consumers read review responses before they choose a business</div>
+    </div>
+    <div class="proof-card pantheon-card pantheon-stat">
+      <div class="proof-stat">3 Days</div>
+      <div class="proof-label">average time to go fully live — safe, guided, no tech stress</div>
+    </div>
+  </div>
+</section>
+
+<section id="about" class="pantheon-reveal">
+  <div class="about-grid">
+    <div class="about-visual">
+      <div class="about-box-accent"></div>
+      <div class="about-box-main">
+        <div class="about-inner">
+          <div class="about-big">P</div>
+          <p class="about-quote">"We don't just build automations — we build businesses that answer even when you can't."</p>
+          <div class="about-stat">
+            <span class="about-stat-num">24/7</span>
+            <span class="about-stat-label">Your business, always on</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="about-content">
+      <span class="section-label">Why Presency</span>
+      <h2 class="section-title" style="margin-bottom:32px">Built for<br><em>Las Vegas</em><br>businesses.</h2>
+      <div class="about-point">
+        <div class="about-point-title">Safe hands for your reputation</div>
+        <div class="about-point-text">Every review response is drafted for your approval before it goes live. Your name, your voice, your standards — we just make sure nothing slips through.</div>
+      </div>
+      <div class="about-point">
+        <div class="about-point-title">No tech experience required</div>
+        <div class="about-point-text">We handle all the setup, integration, and maintenance. You get a dashboard that shows you what's working. That's it.</div>
+      </div>
+      <div class="about-point">
+        <div class="about-point-title">Results you can measure — and share</div>
+        <div class="about-point-text">Every client gets a monthly report showing missed calls recovered, reviews generated, and leads captured. When the numbers are good, you'll want to tell people.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="pantheon-reveal">
+  <div class="contact-wrap">
+    <div>
+      <span class="section-label">Get Started</span>
+      <h2 class="contact-info-title">Let's make your<br>business <em>always present.</em></h2>
+      <p class="contact-info-text">Book your free 30-minute consultation. We'll audit your current digital presence, identify your biggest gaps, and show you exactly how Presency can help — no pressure, no hard sell.</p>
+      <div class="contact-detail">
+        <div class="contact-item">
+          <span class="contact-item-label">Location</span>
+          <span class="contact-item-val">Las Vegas, Nevada</span>
+        </div>
+        <div class="contact-item">
+          <span class="contact-item-label">Email</span>
+          <span class="contact-item-val">hello@presencyco.com</span>
+        </div>
+        <div class="contact-item">
+          <span class="contact-item-label">Response Time</span>
+          <span class="contact-item-val">Within 2 business hours</span>
+        </div>
+        <div class="contact-item">
+          <span class="contact-item-label">Consultation</span>
+          <span class="contact-item-val">Free — no commitment required</span>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form-wrap pantheon-card pantheon-rim-top">
+      <div id="formContent">
+        <p class="form-title">Book Your Free Consultation</p>
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" id="fname" placeholder="First and last name">
+        </div>
+        <div class="form-group">
+          <label>Business Name</label>
+          <input type="text" id="fbiz" placeholder="Your business name">
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" id="fphone" placeholder="(702) 555-0000">
+        </div>
+        <div class="form-group">
+          <label>I'm most interested in</label>
+          <select id="fservice">
+            <option value="">Select a package...</option>
+            <option>Starter — $497/mo</option>
+            <option>Presence — $897/mo</option>
+            <option>Full Front Office — $1,397/mo</option>
+            <option>Not sure — help me choose</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Anything else?</label>
+          <textarea id="fnotes" placeholder="Tell us a bit about your business..."></textarea>
+        </div>
+        <button class="btn-submit pantheon-btn-primary" onclick="submitForm()">Send My Request →</button>
+      </div>
+      <div class="form-success" id="formSuccess">
+        <div class="success-icon">✦</div>
+        <p class="success-title">We'll be in touch shortly.</p>
+        <p class="success-text">Thank you for reaching out. Your consultation request has been received. Expect a response within 2 business hours.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Presency</div>
+  <span class="footer-tagline">"Your Business. Always Present."</span>
+  <span class="footer-copy">© 2026 Axis Creative LLC · Las Vegas, NV · <a href="/terms.html" style="color:var(--text-dim);text-decoration:none">Terms</a> · <a href="/privacy.html" style="color:var(--text-dim);text-decoration:none">Privacy</a></span>
+</footer>
+
+<script>
+function calcROI(){
+  var calls=parseFloat(document.getElementById('roiCalls').value)||0;
+  var ticket=parseFloat(document.getElementById('roiTicket').value)||0;
+  var monthly=Math.round(calls*4.33*ticket*0.85);
+  document.getElementById('roiLoss').textContent='$'+monthly.toLocaleString();
+}
+calcROI();
+
+function sharePresency(){
+  var text='Presency helps Las Vegas small businesses stop missing calls and own their Google presence. Check them out:';
+  var url='https://presencyco.com';
+  if(navigator.share){
+    navigator.share({title:'Presency',text:text,url:url}).catch(function(){});
+  } else {
+    navigator.clipboard.writeText(text+' '+url).then(function(){
+      alert('Link copied — send it to a business owner who needs this.');
+    }).catch(function(){
+      prompt('Copy this link:',url);
+    });
+  }
+}
+
+window.addEventListener('scroll',function(){
+  var nav=document.getElementById('mainNav');
+  if(window.scrollY>60)nav.classList.add('scrolled');
+  else nav.classList.remove('scrolled');
+});
+
+function submitForm(){
+  var name=document.getElementById('fname').value;
+  var phone=document.getElementById('fphone').value;
+  if(!name||!phone){alert('Please enter your name and phone number.');return;}
+  var webhookUrl='https://hook.us2.make.com/646lnq7opp6anufzmfx4kwpqjvjtbrmv';
+  var payload={
+    name:name,
+    business:document.getElementById('fbiz').value,
+    phone:phone,
+    service:document.getElementById('fservice').value,
+    notes:document.getElementById('fnotes').value,
+    source:'presencyco.com',
+    timestamp:new Date().toISOString()
+  };
+  fetch(webhookUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(function(){});
+  document.getElementById('formContent').style.display='none';
+  document.getElementById('formSuccess').classList.add('visible');
+}
+
+function toggleMobileMenu(){
+  var links=document.querySelector('.nav-links');
+  if(links.style.display==='flex'){
+    links.style.display='none';
+  } else {
+    links.style.display='flex';
+    links.style.flexDirection='column';
+    links.style.position='fixed';
+    links.style.top='70px';
+    links.style.left='0';
+    links.style.right='0';
+    links.style.background='rgba(7,8,10,0.98)';
+    links.style.padding='32px 24px';
+    links.style.gap='28px';
+    links.style.borderBottom='1px solid #2A2A2A';
+    links.style.zIndex='99';
+  }
+}
+</script>
+<script src="js/pantheon.js"></script>
+</body>
+</html>

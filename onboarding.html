@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presency — Client Intake</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/pantheon.css">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{background:var(--black);color:var(--text);font-family:var(--font-body);min-height:100%}
+body{max-width:700px;margin:0 auto;padding:0 20px 80px}
+
+.site-header{padding:32px 0 24px;text-align:center;border-bottom:1px solid var(--border);margin-bottom:40px}
+.logo{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase}
+.logo em{font-style:italic}
+.tagline{font-size:10px;letter-spacing:0.35em;text-transform:uppercase;color:var(--text-dim);margin-top:6px}
+
+.progress-wrap{margin-bottom:36px}
+.progress-label{display:flex;justify-content:space-between;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px}
+.progress-bar{height:2px;background:var(--surface2)}
+.progress-fill{height:100%;background:var(--gold);transition:width 0.4s ease;width:0%}
+
+.welcome{background:var(--surface);border:1px solid var(--gold-border);padding:28px 24px;margin-bottom:36px}
+.welcome-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;color:var(--text);margin-bottom:10px}
+.welcome-sub{font-size:13px;line-height:1.8;color:var(--text-muted)}
+.welcome-time{display:inline-block;font-size:10px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--live);margin-top:12px;padding:4px 12px;border:1px solid var(--trust-border);background:var(--live-muted)}
+.safe-banner{background:var(--trust-muted);border:1px solid var(--trust-border);padding:14px 18px;margin-bottom:28px;font-size:12px;color:var(--text-muted);line-height:1.7;display:flex;gap:10px;align-items:flex-start}
+.safe-banner::before{content:'✓';color:var(--trust);font-weight:700;flex-shrink:0;margin-top:1px}
+
+.section{margin-bottom:36px}
+.section-title{font-size:10px;font-weight:700;letter-spacing:0.35em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.section-title::before{content:'';display:block;width:20px;height:1px;background:var(--gold)}
+
+.question{background:var(--surface);border:1px solid var(--border);padding:20px;margin-bottom:10px;transition:border-color 0.2s}
+.question:focus-within{border-color:var(--gold-dim)}
+.q-header{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}
+.q-num{width:28px;height:28px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--gold);flex-shrink:0}
+.q-label{font-size:13px;font-weight:600;color:var(--text);flex:1;line-height:1.5}
+.q-optional{font-size:10px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim);flex-shrink:0;white-space:nowrap}
+.q-help{font-size:11px;color:var(--text-dim);margin-bottom:10px;line-height:1.6}
+
+input[type=text],input[type=email],input[type=tel],input[type=url],textarea,select{
+  width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);
+  font-family:'Syne',sans-serif;font-size:13px;padding:12px 14px;outline:none;transition:border-color 0.2s;-webkit-appearance:none;
+}
+input:focus,textarea:focus,select:focus{border-color:var(--gold)}
+input::placeholder,textarea::placeholder{color:var(--text-dim)}
+textarea{min-height:90px;resize:vertical;line-height:1.7}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23D4AF5A' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;cursor:pointer}
+select option{background:var(--surface2);color:var(--text)}
+
+.radio-group,.check-group{display:flex;flex-direction:column;gap:8px}
+.radio-item,.check-item{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:var(--surface2);border:1px solid var(--border);cursor:pointer;transition:border-color 0.2s}
+.radio-item:hover,.check-item:hover{border-color:var(--gold-dim)}
+.radio-item input,.check-item input{width:16px;height:16px;accent-color:var(--gold);flex-shrink:0;cursor:pointer;margin-top:2px}
+.radio-item label,.check-item label{font-size:13px;color:var(--text);cursor:pointer;flex:1;line-height:1.5}
+.radio-item.selected,.check-item.selected{border-color:var(--gold);background:var(--gold-glow)}
+
+/* PRICING CARDS */
+.pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+@media(max-width:560px){.pricing-grid{grid-template-columns:1fr}}
+.pkg-card{background:var(--surface2);border:2px solid var(--border);padding:20px;cursor:pointer;transition:all 0.2s;position:relative}
+.pkg-card:hover{border-color:var(--gold-dim)}
+.pkg-card.selected{border-color:var(--gold);background:var(--gold-glow)}
+.pkg-card.featured{border-color:var(--gold-border)}
+.pkg-badge{position:absolute;top:-1px;right:12px;background:var(--gold);color:var(--black);font-size:9px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;padding:3px 10px}
+.pkg-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px}
+.pkg-price{font-size:22px;font-weight:700;color:var(--gold);margin-bottom:2px}
+.pkg-price span{font-size:11px;font-weight:400;color:var(--text-muted)}
+.pkg-save{font-size:10px;color:var(--trust);font-weight:600;letter-spacing:0.1em;margin-bottom:12px}
+.pkg-divider{height:1px;background:var(--border);margin-bottom:12px}
+.pkg-features{list-style:none;display:flex;flex-direction:column;gap:6px}
+.pkg-features li{font-size:11px;color:var(--text-muted);display:flex;gap:8px;line-height:1.5}
+.pkg-features li::before{content:'✓';color:var(--trust);flex-shrink:0;font-size:11px;margin-top:1px}
+.pkg-card input{position:absolute;opacity:0;pointer-events:none}
+.pkg-custom{background:var(--surface2);border:2px dashed var(--border);padding:20px;cursor:pointer;transition:all 0.2s;grid-column:1/-1}
+.pkg-custom:hover{border-color:var(--gold-dim)}
+.pkg-custom.selected{border-color:var(--gold);background:var(--gold-glow)}
+.pkg-custom-header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.pkg-custom-title{font-size:14px;font-weight:700;color:var(--text)}
+.pkg-custom-sub{font-size:11px;color:var(--text-muted);margin-top:4px}
+
+/* BUILD YOUR OWN SERVICES */
+.byo-section{display:none;margin-top:16px;border-top:1px solid var(--border);padding-top:16px}
+.byo-section.visible{display:block}
+.service-item{display:flex;align-items:center;justify-content:space-between;padding:14px;background:var(--surface);border:1px solid var(--border);margin-bottom:8px;cursor:pointer;transition:all 0.2s;gap:12px}
+.service-item:hover{border-color:var(--gold-dim)}
+.service-item.selected{border-color:var(--gold);background:var(--gold-glow)}
+.service-check{width:18px;height:18px;accent-color:var(--gold);flex-shrink:0;cursor:pointer}
+.service-info{flex:1}
+.service-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px}
+.service-desc{font-size:11px;color:var(--text-muted);line-height:1.5}
+.service-price{font-size:14px;font-weight:700;color:var(--gold);flex-shrink:0}
+.byo-total{background:var(--surface2);border:1px solid var(--gold-border);padding:14px 16px;margin-top:4px}
+.byo-total-row{display:flex;justify-content:space-between;align-items:center}
+.byo-total-label{font-size:11px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-muted)}
+.byo-total-price{font-size:20px;font-weight:700;color:var(--gold)}
+.byo-discount{font-size:11px;color:var(--trust);font-weight:600;margin-top:4px;display:none}
+.byo-discount.show{display:block}
+
+/* SOCIAL ADD-ON */
+.addon-wrap{background:var(--surface2);border:1px solid var(--border);padding:16px;margin-bottom:8px;cursor:pointer;transition:all 0.2s;display:flex;align-items:flex-start;gap:14px}
+.addon-wrap:hover{border-color:var(--gold-dim)}
+.addon-wrap.selected{border-color:var(--gold);background:var(--gold-glow)}
+.addon-wrap input{width:18px;height:18px;accent-color:var(--gold);flex-shrink:0;margin-top:2px}
+.addon-info{flex:1}
+.addon-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px}
+.addon-desc{font-size:11px;color:var(--text-muted);line-height:1.5}
+.addon-price{font-size:15px;font-weight:700;color:var(--gold);flex-shrink:0;white-space:nowrap}
+
+.conditional{display:none}
+.conditional.visible{display:block}
+.field-error{font-size:11px;color:var(--red);margin-top:6px;display:none}
+.field-error.show{display:block}
+.question.error{border-color:var(--red)}
+
+.upload-zone{border:1px dashed var(--border);padding:24px;text-align:center;cursor:pointer;transition:border-color 0.2s;position:relative}
+.upload-zone:hover{border-color:var(--gold)}
+.upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-text{font-size:12px;color:var(--text-muted)}
+.upload-sub{font-size:10px;color:var(--text-dim);margin-top:4px;letter-spacing:0.1em}
+.upload-name{font-size:12px;color:var(--gold);margin-top:8px;display:none}
+
+.gold-divider{height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);margin:8px 0;opacity:0.25}
+.submit-wrap{margin-top:40px;text-align:center}
+.btn-submit{background:var(--gold);color:var(--black);font-family:var(--font-body);font-size:12px;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;padding:18px 48px;border:none;cursor:pointer;width:100%;transition:opacity 0.2s}
+.btn-submit:hover{opacity:0.9}
+.btn-submit:disabled{opacity:0.4;cursor:not-allowed}
+.submit-note{font-size:11px;color:var(--text-dim);margin-top:12px;letter-spacing:0.08em}
+.success-screen{display:none;text-align:center;padding:60px 20px}
+.success-screen.show{display:block}
+.success-icon{font-size:40px;margin-bottom:20px}
+.success-title{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;color:var(--text);margin-bottom:10px}
+.success-sub{font-size:14px;color:var(--text-muted);line-height:1.8;max-width:480px;margin:0 auto 20px}
+.success-gold{font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold)}
+</style>
+</head>
+<body class="pantheon-root">
+
+<div class="pantheon-mesh" aria-hidden="true"></div>
+<div class="pantheon-grain" aria-hidden="true"></div>
+
+<header class="site-header" style="position:relative;z-index:2">
+  <div class="logo">Presen<em>cy</em></div>
+  <div class="tagline">Client Intake Form</div>
+</header>
+
+<div class="safe-banner" style="position:relative;z-index:2">Your information is sent securely to our team only. We never sell your data. You'll hear from us within 2 business hours — no spam, no pressure.</div>
+
+<div id="formWrapper" style="position:relative;z-index:2">
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>Your Setup Information</span>
+      <span id="progressText">Getting started</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+
+  <div class="welcome pantheon-card pantheon-rim-top">
+    <div class="welcome-title">Let's get your business live.</div>
+    <div class="welcome-sub">Your payment is confirmed. Fill this out and we'll have everything configured and running within 3 business days. The more detail you give us, the better we can tailor everything to your business.</div>
+    <span class="welcome-time">⏱ About 5 minutes</span>
+  </div>
+
+  <form id="intakeForm" novalidate>
+
+    <!-- SECTION 1: PLAN SELECTION -->
+    <div class="section">
+      <div class="section-title">Your Presency Plan</div>
+
+      <div class="question" id="q-plan-wrap">
+        <div class="q-header">
+          <div class="q-num">1</div>
+          <div class="q-label">Select your plan or build your own</div>
+        </div>
+        <div class="q-help">Choose a pre-built package for the best value, or pick exactly the services your business needs.</div>
+
+        <div class="pricing-grid">
+          <!-- STARTER -->
+          <div class="pkg-card" onclick="selectPackage(this,'starter')" id="pkg-starter">
+            <input type="radio" name="plan" value="starter">
+            <div class="pkg-name">Starter</div>
+            <div class="pkg-price">$497<span>/mo</span></div>
+            <div class="pkg-save">Save $97/mo vs. à la carte</div>
+            <div class="pkg-divider"></div>
+            <ul class="pkg-features">
+              <li>24/7 Revenue Recovery</li>
+              <li>Google Business Domination</li>
+              <li>Monthly performance report</li>
+            </ul>
+          </div>
+
+          <!-- PRESENCE -->
+          <div class="pkg-card featured" onclick="selectPackage(this,'presence')" id="pkg-presence">
+            <div class="pkg-badge">Most Popular</div>
+            <input type="radio" name="plan" value="presence">
+            <div class="pkg-name">Presence</div>
+            <div class="pkg-price">$897<span>/mo</span></div>
+            <div class="pkg-save">Save $144/mo vs. à la carte</div>
+            <div class="pkg-divider"></div>
+            <ul class="pkg-features">
+              <li>Everything in Starter</li>
+              <li>Reputation Management</li>
+              <li>AI Chat Widget (24/7 on your site)</li>
+              <li>Priority support</li>
+            </ul>
+          </div>
+
+          <!-- FULL FRONT OFFICE -->
+          <div class="pkg-card" onclick="selectPackage(this,'full_front_office')" id="pkg-ffo">
+            <input type="radio" name="plan" value="full_front_office">
+            <div class="pkg-name">Full Front Office</div>
+            <div class="pkg-price">$1,397<span>/mo</span></div>
+            <div class="pkg-save">Save $238/mo vs. à la carte</div>
+            <div class="pkg-divider"></div>
+            <ul class="pkg-features">
+              <li>Everything in Presence</li>
+              <li>AI Search Visibility</li>
+              <li>Dedicated account manager</li>
+              <li>Same-day priority support</li>
+            </ul>
+          </div>
+
+          <!-- BUILD YOUR OWN -->
+          <div class="pkg-custom" onclick="selectPackage(this,'custom')" id="pkg-custom">
+            <input type="radio" name="plan" value="custom">
+            <div class="pkg-custom-header">
+              <div>
+                <div class="pkg-custom-title">Build Your Own Package</div>
+                <div class="pkg-custom-sub">Pick exactly what your business needs. Save 10% when you choose 3 or more services.</div>
+              </div>
+              <div style="font-size:22px;color:var(--gold);flex-shrink:0">+</div>
+            </div>
+
+            <div class="byo-section" id="byo-section">
+              <div class="service-item" onclick="toggleService(event,this,'svc_missed_call',297)">
+                <input type="checkbox" name="svc_missed_call" value="297" class="service-check">
+                <div class="service-info">
+                  <div class="service-name">24/7 Revenue Recovery</div>
+                  <div class="service-desc">Every missed call gets an instant text with your booking link. Recover leads 24/7.</div>
+                </div>
+                <div class="service-price">$297<span style="font-size:10px;font-weight:400;color:var(--text-muted)">/mo</span></div>
+              </div>
+
+              <div class="service-item" onclick="toggleService(event,this,'svc_gbp',297)">
+                <input type="checkbox" name="svc_gbp" value="297" class="service-check">
+                <div class="service-info">
+                  <div class="service-name">Google Business Domination</div>
+                  <div class="service-desc">Weekly posts, photos, verification, and NAP hygiene. Dominate local search.</div>
+                </div>
+                <div class="service-price">$297<span style="font-size:10px;font-weight:400;color:var(--text-muted)">/mo</span></div>
+              </div>
+
+              <div class="service-item" onclick="toggleService(event,this,'svc_reviews',297)">
+                <input type="checkbox" name="svc_reviews" value="297" class="service-check">
+                <div class="service-info">
+                  <div class="service-name">Reputation Management</div>
+                  <div class="service-desc">Automated review requests plus AI-drafted responses to every review.</div>
+                </div>
+                <div class="service-price">$297<span style="font-size:10px;font-weight:400;color:var(--text-muted)">/mo</span></div>
+              </div>
+
+              <div class="service-item" onclick="toggleService(event,this,'svc_chat',347)">
+                <input type="checkbox" name="svc_chat" value="347" class="service-check">
+                <div class="service-info">
+                  <div class="service-name">AI Chat Widget</div>
+                  <div class="service-desc">AI answers customer questions on your website around the clock. No human needed.</div>
+                </div>
+                <div class="service-price">$347<span style="font-size:10px;font-weight:400;color:var(--text-muted)">/mo</span></div>
+              </div>
+
+              <div class="service-item" onclick="toggleService(event,this,'svc_ai_visibility',197)">
+                <input type="checkbox" name="svc_ai_visibility" value="197" class="service-check">
+                <div class="service-info">
+                  <div class="service-name">AI Search Visibility</div>
+                  <div class="service-desc">Get recommended by Google AI and ChatGPT. Structured data + review signals optimized.</div>
+                </div>
+                <div class="service-price">$197<span style="font-size:10px;font-weight:400;color:var(--text-muted)">/mo</span></div>
+              </div>
+
+              <div class="byo-total">
+                <div class="byo-total-row">
+                  <div class="byo-total-label">Your Monthly Total</div>
+                  <div class="byo-total-price" id="byoTotal">$0/mo</div>
+                </div>
+                <div class="byo-discount" id="byoDiscount">✦ 10% bundle discount applied — you're saving <span id="byoSavings">$0</span>/mo</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field-error" id="q-plan-err">Please select a plan or build your own package.</div>
+      </div>
+    </div>
+
+    <!-- SECTION 2: YOUR BUSINESS -->
+    <div class="section">
+      <div class="section-title">Your Business</div>
+
+      <div class="question" id="q1-wrap">
+        <div class="q-header">
+          <div class="q-num">2</div>
+          <div class="q-label">What is your business name?</div>
+        </div>
+        <input type="text" id="q1" name="business_name" placeholder="e.g. Vegas Auto Repair" required>
+        <div class="field-error" id="q1-err">Please enter your business name.</div>
+      </div>
+
+      <div class="question">
+        <div class="q-header">
+          <div class="q-num">3</div>
+          <div class="q-label">What type of business do you run?</div>
+        </div>
+        <select id="q2" name="business_type" required>
+          <option value="" disabled selected>Select your industry</option>
+          <option>Restaurant or Bar</option>
+          <option>Salon or Spa</option>
+          <option>Auto Service or Detailing</option>
+          <option>Contractor or Home Service</option>
+          <option>Retail Store</option>
+          <option>Medical or Dental</option>
+          <option>Real Estate</option>
+          <option>Fitness or Wellness</option>
+          <option>Cleaning Service</option>
+          <option>Photography or Creative</option>
+          <option>Other</option>
+        </select>
+        <div class="field-error" id="q2-err">Please select your business type.</div>
+      </div>
+
+      <div class="question">
+        <div class="q-header">
+          <div class="q-num">4</div>
+          <div class="q-label">Business address</div>
+        </div>
+        <input type="text" id="q3" name="business_address" placeholder="123 Main St, Las Vegas, NV 89101" required>
+        <div class="field-error" id="q3-err">Please enter your business address.</div>
+      </div>
+
+      <div class="question">
+        <div class="q-header">
+          <div class="q-num">5</div>
+          <div class="q-label">Business phone number</div>
+        </div>
+        <input type="tel" id="q4" name="business_phone" placeholder="(702) 555-0000" required>
+        <div class="field-error" id="q4-err">Please enter your business phone number.</div>
+      </div>
+
+      <div class="question">
+        <div class="q-header">
+          <div class="q-num">6</div>
+          <div class="q-label">Business email address</div>
+        </div>
+        <input type="email" id="q5" name="business_email" placeholder="you@yourbusiness.com" required>
+        <div class="field-error" id="q5-err">Please enter a valid email address.</div>
+      </div>
+
+      <div class="question">
+        <div class="q-header">
+          <div class="q-num">7</div>
+          <div class="q-label">Business hours</div>
+        </div>
+        <textarea id="q6" name="business_hours" placeholder="e.g. Mon–Fri 9am–6pm, Sat 10am–4pm, Sun Closed" required></textarea>
+        <div class="field-error" id="q6-err">Please enter your business hours.</div>
+      </div>
+    </div>
+
+    <!-- SECTION 3: ONLINE PRESENCE -->
+    <div class="section">
+      <div class="section-title">Your Online Presence</div>
+
+      <div class="question">
+        <div class="q-header">
+          <div class="q-num">8</div>
+          <div class="q-label">Do you have a website?</div>
+        </div>
+        <div class="radio-group">
+          <div class="radio-item" onclick="selectRadio(this,'has_website','yes');showEl('website-url-wrap',true)">
+            <input type="radio" name="has_website" value="yes"><label>Yes</label>
+          </div>
+          <div class="radio-item" onclick="selectRadio(this,'has_website','no');showEl('website-url-wrap',false)">
+            <input type="radio" name="has_website" value="no"><label>No website yet</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="question conditional" id="website-url-wrap">
+        <div class="q-header">
+          <div class="q-num">↳</div>
+          <div class="q-label">Website URL</div>
+          <div class="q-optional">Optional</div>
+        </div>
+        <input type="url" name="website_url" placeholder="https://yourbusiness.com">
+      </div>
+
+      <div class="question">
+        <div class="q-header">
+          <div class="q-num">9</div>
+          <div class="q-label">Do you have a Google Business Profile?</div>
+        </div>
+        <div class="radio-group">
+          <div class="radio-item" onclick="selectRadio(this,'has_gbp','yes');showEl('gbp-url-wrap',true)">
+            <input type="radio" name="has_gbp" value="yes"><label>Yes — I have a Google listing</label>
+          </div>
+          <div class="radio-item" onclick="selectRadio(this,'has_gbp','no');showEl('gbp-url-wrap',false)">
+            <input type="radio" name="has_gbp" value="no"><label>No — I need one created</label>
+          </div>
+          <div class="radio-item" onclick="selectRadio(this,'has_gbp','unsure');showEl('gbp-url-wrap',false)">
+            <input type="radio" name="has_gbp" value="unsure"><label>Not sure</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="question conditional" id="gbp-url-wrap">
+        <div class="q-header">
+          <div class="q-num">↳</div>
+          <div class="q-label">Google Business Profile URL</div>
+          <div class="q-optional">Optional</div>
+        </div>
+        <input type="url" name="gbp_url" placeholder="https://g.page/yourbusiness">
+      </div>
+    </div>
+
+    <!-- SECTION 4: SOCIAL MEDIA (shows for presence, ffo, or custom with social) -->
+    <div class="section conditional" id="social-section">
+      <div class="section-title">Social Media</div>
+
+      <div class="question">
+        <div class="q-header">
+          <div class="q-num">10</div>
+          <div class="q-label">Do you have social media accounts for your business?</div>
+        </div>
+        <div class="radio-group">
+          <div class="radio-item" onclick="selectRadio(this,'has_social','yes');showEl('social-existing',true);showEl('social-create',false)">
+            <input type="radio" name="has_social" value="yes"><label>Yes, I have accounts</label>
+          </div>
+          <div class="radio-item" onclick="selectRadio(this,'has_social','no');showEl('social-existing',false);showEl('social-create',true)">
+            <input type="radio" name="has_social" value="no"><label>No, I don't have any yet</label>
+          </div>
+          <div class="radio-item" onclick="selectRadio(this,'has_social','some');showEl('social-existing',true);showEl('social-create',true)">
+            <input type="radio" name="has_social" value="some"><label>Some but not all platforms</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="question conditional" id="social-existing">
+        <div class="q-header">
+          <div class="q-num">↳</div>
+          <div class="q-label">Your social media handles or URLs</div>
+          <div class="q-optional">Optional</div>
+        </div>
+        <input type="text" name="instagram" placeholder="Instagram: @yourbusiness" style="margin-bottom:8px">
+        <input type="url" name="facebook" placeholder="Facebook: https://facebook.com/yourbusiness">
+      </div>
+
+      <div class="question conditional" id="social-create">
+        <div class="q-header">
+          <div class="q-num">↳</div>
+          <div class="q-label">Would you like us to create and fully brand your social media accounts?</div>
+        </div>
+        <div class="q-help">We create, optimize, and brand your Instagram and Facebook business pages — custom bio, branding applied, first post published. One-time service.</div>
+        <div class="addon-wrap" onclick="toggleAddon(this,'social_setup_addon','497')">
+          <input type="checkbox" name="social_setup_addon" value="497">
+          <div class="addon-info">
+            <div class="addon-name">Social Media Account Setup</div>
+            <div class="addon-desc">Complete Instagram + Facebook setup, branded and ready to post. Done within your 3-day onboarding window.</div>
+          </div>
+          <div class="addon-price">$497 <span style="font-size:10px;font-weight:400;color:var(--text-muted)">one-time</span></div>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="q-header">
+          <div class="q-num">11</div>
+          <div class="q-label">What tone should your social media content have?</div>
+        </div>
+        <div class="radio-group">
+          <div class="radio-item" onclick="selectRadio(this,'social_tone','professional')">
+            <input type="radio" name="social_tone" value="professional"><label>Professional — polished, trust-building, credibility-focused</label>
+          </div>
+          <div class="radio-item" onclick="selectRadio(this,'social_tone','friendly')">
+            <input type="radio" name="social_tone" value="friendly"><label>Friendly — warm, approachable, community-first</label>
+          </div>
+          <div class="radio-item" onclick="selectRadio(this,'social_tone','energetic')">
+            <input type="radio" name="social_tone" value="energetic"><label>Energetic — bold, exciting, attention-grabbing</label>
+          </div>
+          <div class="radio-item" onclick="selectRadio(this,'social_tone','local')">
+            <input type="radio" name="social_tone" value="local"><label>Local — Las Vegas focused, neighborhood feel</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="q-header">
+          <div class="q-num">12</div>
+          <div class="q-label">Do you have photos or videos we can use?</div>
+        </div>
+        <div class="radio-group">
+          <div class="radio-item" onclick="selectRadio(this,'has_content','yes')">
+            <input type="radio" name="has_content" value="yes"><label>Yes — I'll email photos to hello@presencyco.com</label>
+          </div>
+          <div class="radio-item" onclick="selectRadio(this,'has_content','some')">
+            <input type="radio" name="has_content" value="some"><label>I have some — will send what I have</label>
+          </div>
+          <div class="radio-item" onclick="selectRadio(this,'has_content','no')">
+            <input type="radio" name="has_content" value="no"><label>No — use branded stock photos</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 5: YOUR CUSTOMERS -->
+    <div class="section">
+      <div class="section-title">Your Customers</div>
+
+      <div class="question">
+        <div class="q-header">
+          <div class="q-num" id="qn-services">11</div>
+          <div class="q-label">Describe what you sell or offer</div>
+        </div>
+        <div class="q-help">List your main services or products. This shapes your Google profile, auto-texts, and AI chat responses.</div>
+        <textarea id="q-services" name="services_offered" placeholder="e.g. Oil changes, tire rotations, brake service, engine diagnostics. We specialize in domestic vehicles." required></textarea>
+        <div class="field-error" id="q-services-err">Please describe your services.</div>
+      </div>
+
+      <div class="question">
+        <div class="q-header">
+          <div class="q-num">↳</div>
+          <div class="q-label">Who is your ideal customer?</div>
+          <div class="q-optional">Optional</div>
+        </div>
+        <div class="q-help">Age, situation, what they need, why they choose you.</div>
+        <textarea name="ideal_customer" placeholder="e.g. Homeowners in Summerlin, age 35–60, who want reliable service without dealership prices."></textarea>
+      </div>
+
+      <div class="question">
+        <div class="q-header">
+          <div class="q-num">↳</div>
+          <div class="q-label">What is your biggest challenge right now?</div>
+          <div class="q-optional">Optional</div>
+        </div>
+        <select name="biggest_challenge">
+          <option value="" disabled selected>Select your biggest challenge</option>
+          <option>Not getting enough new customers</option>
+          <option>Missing too many calls and losing leads</option>
+          <option>Too few Google reviews hurting my ranking</option>
+          <option>No consistent social media presence</option>
+          <option>Hard to keep existing customers coming back</option>
+          <option>No online presence at all</option>
+          <option>All of the above</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <div class="q-header">
+          <div class="q-num">↳</div>
+          <div class="q-label">How many calls do you miss per week?</div>
+          <div class="q-optional">Optional</div>
+        </div>
+        <div class="radio-group">
+          <div class="radio-item" onclick="selectRadio(this,'missed_calls','0-2')"><input type="radio" name="missed_calls" value="0-2"><label>0–2</label></div>
+          <div class="radio-item" onclick="selectRadio(this,'missed_calls','3-5')"><input type="radio" name="missed_calls" value="3-5"><label>3–5</label></div>
+          <div class="radio-item" onclick="selectRadio(this,'missed_calls','6-10')"><input type="radio" name="missed_calls" value="6-10"><label>6–10</label></div>
+          <div class="radio-item" onclick="selectRadio(this,'missed_calls','10+')"><input type="radio" name="missed_calls" value="10+"><label>More than 10 — it's a real problem</label></div>
+          <div class="radio-item" onclick="selectRadio(this,'missed_calls','unknown')"><input type="radio" name="missed_calls" value="unknown"><label>I honestly don't know</label></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 6: BRANDING -->
+    <div class="section">
+      <div class="section-title">Your Branding</div>
+
+      <div class="question">
+        <div class="q-header">
+          <div class="q-num">↳</div>
+          <div class="q-label">Do you have a business logo?</div>
+        </div>
+        <div class="radio-group">
+          <div class="radio-item" onclick="selectRadio(this,'has_logo','upload');showEl('logo-upload-wrap',true)">
+            <input type="radio" name="has_logo" value="upload"><label>Yes — upload below</label>
+          </div>
+          <div class="radio-item" onclick="selectRadio(this,'has_logo','email');showEl('logo-upload-wrap',false)">
+            <input type="radio" name="has_logo" value="email"><label>Yes — I'll email it to hello@presencyco.com</label>
+          </div>
+          <div class="radio-item" onclick="selectRadio(this,'has_logo','no');showEl('logo-upload-wrap',false)">
+            <input type="radio" name="has_logo" value="no"><label>No logo yet</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="question conditional" id="logo-upload-wrap">
+        <div class="q-header">
+          <div class="q-num">↳</div>
+          <div class="q-label">Upload your logo</div>
+          <div class="q-optional">Optional</div>
+        </div>
+        <div class="upload-zone">
+          <input type="file" name="logo_file" accept=".png,.jpg,.jpeg,.svg,.webp" onchange="handleFile(this,'logoName')">
+          <div class="upload-text">Click to upload or drag and drop</div>
+          <div class="upload-sub">PNG, JPG, SVG · Max 5MB</div>
+          <div class="upload-name" id="logoName"></div>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="q-header">
+          <div class="q-num">↳</div>
+          <div class="q-label">Brand colors</div>
+          <div class="q-optional">Optional</div>
+        </div>
+        <input type="text" name="brand_colors" placeholder="e.g. Navy blue and gold — or #003366 and #C9A84C">
+      </div>
+    </div>
+
+    <!-- SECTION 7: PREFERENCES -->
+    <div class="section">
+      <div class="section-title">Setup Preferences</div>
+
+      <div class="question">
+        <div class="q-header">
+          <div class="q-num">↳</div>
+          <div class="q-label">Best time to reach you</div>
+        </div>
+        <div class="radio-group">
+          <div class="radio-item" onclick="selectRadio(this,'best_time','morning')"><input type="radio" name="best_time" value="morning"><label>Morning — 9am to 12pm</label></div>
+          <div class="radio-item" onclick="selectRadio(this,'best_time','afternoon')"><input type="radio" name="best_time" value="afternoon"><label>Afternoon — 12pm to 5pm</label></div>
+          <div class="radio-item" onclick="selectRadio(this,'best_time','evening')"><input type="radio" name="best_time" value="evening"><label>Evening — 5pm to 8pm</label></div>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="q-header">
+          <div class="q-num">↳</div>
+          <div class="q-label">Preferred contact method</div>
+        </div>
+        <div class="radio-group">
+          <div class="radio-item" onclick="selectRadio(this,'contact_method','text')"><input type="radio" name="contact_method" value="text"><label>Text message</label></div>
+          <div class="radio-item" onclick="selectRadio(this,'contact_method','email')"><input type="radio" name="contact_method" value="email"><label>Email</label></div>
+          <div class="radio-item" onclick="selectRadio(this,'contact_method','call')"><input type="radio" name="contact_method" value="call"><label>Phone call</label></div>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="q-header">
+          <div class="q-num">↳</div>
+          <div class="q-label">Anything else we should know?</div>
+          <div class="q-optional">Optional</div>
+        </div>
+        <textarea name="additional_notes" placeholder="Special instructions, current systems you use, or anything that will help us serve you better..."></textarea>
+      </div>
+    </div>
+
+    <div class="gold-divider"></div>
+    <div class="submit-wrap">
+      <button type="submit" class="btn-submit pantheon-btn-primary" id="submitBtn">Submit — Let's Go Live →</button>
+      <div class="submit-note">Sent securely to our team. We'll reach out within 2 business hours.</div>
+    </div>
+  </form>
+</div>
+
+<div class="success-screen" id="successScreen">
+  <div class="success-icon">✦</div>
+  <div class="success-title">You're all set.</div>
+  <div class="success-sub">Your intake is received. Our team will reach out within 2 business hours to begin your onboarding. Most clients are fully live within 3 business days.</div>
+  <div class="success-gold">— The Presency Team</div>
+</div>
+
+<script>
+const WEBHOOK='https://hook.us2.make.com/o15lji6hwctniss6rmeikiek7e5mpmbc';
+let byoTotal=0;
+let selectedPlan='';
+
+// Pre-fill plan from URL
+const params=new URLSearchParams(window.location.search);
+const urlPlan=params.get('plan');
+if(urlPlan){
+  const map={starter:'pkg-starter',presence:'pkg-presence',full_front_office:'pkg-ffo'};
+  if(map[urlPlan]){
+    const el=document.getElementById(map[urlPlan]);
+    if(el)selectPackage(el,urlPlan);
+  }
+}
+
+function selectPackage(card,plan){
+  document.querySelectorAll('.pkg-card,.pkg-custom').forEach(c=>{c.classList.remove('selected')});
+  card.classList.add('selected');
+  const input=card.querySelector('input[type=radio]');
+  if(input)input.checked=true;
+  selectedPlan=plan;
+
+  const byoSection=document.getElementById('byo-section');
+  if(plan==='custom'){
+    byoSection.classList.add('visible');
+  } else {
+    byoSection.classList.remove('visible');
+  }
+
+  const showSocial=plan==='custom';
+  showEl('social-section',showSocial);
+  updateProgress();
+}
+
+function toggleService(e,item,name,price){
+  e.stopPropagation();
+  const cb=item.querySelector('input[type=checkbox]');
+  cb.checked=!cb.checked;
+  item.classList.toggle('selected',cb.checked);
+  updateBYOTotal();
+}
+
+function updateBYOTotal(){
+  const services=[
+    {name:'svc_missed_call',price:297},
+    {name:'svc_gbp',price:297},
+    {name:'svc_reviews',price:297},
+    {name:'svc_chat',price:347},
+    {name:'svc_ai_visibility',price:197},
+  ];
+  let total=0;
+  let count=0;
+  services.forEach(s=>{
+    const cb=document.querySelector('[name='+s.name+']');
+    if(cb&&cb.checked){total+=s.price;count++;}
+  });
+  const discount=count>=3?0.1:0;
+  const discounted=Math.round(total*(1-discount));
+  const savings=total-discounted;
+  byoTotal=discounted;
+  document.getElementById('byoTotal').textContent='$'+discounted.toLocaleString()+'/mo';
+  const discEl=document.getElementById('byoDiscount');
+  if(count>=3){
+    discEl.classList.add('show');
+    document.getElementById('byoSavings').textContent='$'+savings;
+  } else {
+    discEl.classList.remove('show');
+  }
+  updateProgress();
+}
+
+function selectRadio(item,name,val){
+  document.querySelectorAll('[name='+name+']').forEach(r=>{
+    r.closest('.radio-item').classList.remove('selected');
+  });
+  item.classList.add('selected');
+  item.querySelector('input').checked=true;
+  updateProgress();
+}
+
+function toggleAddon(item,name,price){
+  const cb=item.querySelector('input');
+  cb.checked=!cb.checked;
+  item.classList.toggle('selected',cb.checked);
+}
+
+function showEl(id,show){
+  const el=document.getElementById(id);
+  if(!el)return;
+  if(show)el.classList.add('visible');
+  else el.classList.remove('visible');
+}
+
+function handleFile(input,nameId){
+  if(input.files[0]){
+    const el=document.getElementById(nameId);
+    el.textContent='✓ '+input.files[0].name;
+    el.style.display='block';
+  }
+}
+
+function updateProgress(){
+  const fields=['business_name','business_type','business_address','business_phone','business_email','business_hours','services_offered'];
+  let filled=fields.filter(n=>{
+    const el=document.querySelector('[name='+n+']');
+    return el&&el.value.trim().length>0;
+  }).length;
+  const hasPlan=selectedPlan!=='';
+  const total=fields.length+1;
+  const pct=Math.round(((filled+(hasPlan?1:0))/total)*100);
+  document.getElementById('progressFill').style.width=pct+'%';
+  document.getElementById('progressText').textContent=pct+'% complete';
+}
+
+document.querySelectorAll('input,textarea,select').forEach(el=>{
+  el.addEventListener('input',updateProgress);
+  el.addEventListener('change',updateProgress);
+});
+
+document.getElementById('intakeForm').addEventListener('submit',async function(e){
+  e.preventDefault();
+  let valid=true;
+  if(!selectedPlan){
+    document.getElementById('q-plan-err').classList.add('show');
+    document.getElementById('q-plan-wrap').classList.add('error');
+    valid=false;
+  }
+  const required=[
+    {id:'q1',err:'q1-err'},{id:'q2',err:'q2-err'},{id:'q3',err:'q3-err'},
+    {id:'q4',err:'q4-err'},{id:'q5',err:'q5-err'},{id:'q6',err:'q6-err'},
+    {id:'q-services',err:'q-services-err'},
+  ];
+  required.forEach(({id,err})=>{
+    const el=document.getElementById(id);
+    if(el&&!el.value.trim()){
+      document.getElementById(err).classList.add('show');
+      el.closest('.question').classList.add('error');
+      valid=false;
+    } else {
+      if(document.getElementById(err))document.getElementById(err).classList.remove('show');
+      if(el)el.closest('.question').classList.remove('error');
+    }
+  });
+  if(!valid){
+    document.querySelector('.question.error').scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=true;
+  btn.textContent='Submitting...';
+  const data={};
+  new FormData(this).forEach((v,k)=>{data[k]=v});
+  data.selected_plan=selectedPlan;
+  data.byo_total=byoTotal||null;
+  data.source='presencyco.com/onboarding';
+  data.timestamp=new Date().toISOString();
+  try{
+    await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+  }catch(e){}
+  document.getElementById('formWrapper').style.display='none';
+  document.getElementById('successScreen').classList.add('show');
+  window.scrollTo(0,0);
+  setTimeout(()=>{window.location.href='https://presencyco.com';},8000);
+});
+updateProgress();
+</script>
+</body>
+</html>

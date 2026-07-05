@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Presency">
+<meta name="theme-color" content="#07080A">
+<link rel="manifest" href="manifest.json">
+<title>Presency Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/pantheon.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --green-bg:var(--live-muted);
+  --red-bg:rgba(212,100,90,0.12);
+  --blue:#6B9EC4;--blue-bg:rgba(107,158,196,0.12);
+  --nav-h:64px;--bottom-nav:68px;
+}
+html,body{height:100%;overflow:hidden;background:var(--black);color:var(--text);font-family:var(--font-body)}
+body{display:flex;flex-direction:column}
+
+/* TOP NAV */
+.top-nav{height:var(--nav-h);background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0;position:relative;z-index:50}
+.top-logo{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase}
+.top-logo em{font-style:italic}
+.top-right{display:flex;align-items:center;gap:12px}
+.notif-dot{width:8px;height:8px;border-radius:50%;background:var(--live);animation:pulse 2s ease infinite}
+.top-page-title{font-size:12px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-muted)}
+
+/* MAIN CONTENT */
+.main{flex:1;overflow-y:auto;padding-bottom:calc(var(--bottom-nav) + 16px);-webkit-overflow-scrolling:touch}
+.page{display:none;padding:20px}
+.page.active{display:block}
+
+/* BOTTOM NAV */
+.bottom-nav{height:var(--bottom-nav);background:var(--surface);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around;flex-shrink:0;padding-bottom:env(safe-area-inset-bottom)}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:8px 16px;border-radius:8px;transition:all 0.2s;min-width:60px}
+.nav-item.active .nav-icon{color:var(--gold)}
+.nav-item.active .nav-label{color:var(--gold)}
+.nav-icon{font-size:20px;color:var(--text-dim);transition:color 0.2s;display:flex;align-items:center;justify-content:center;opacity:0.35}.nav-item.active .nav-icon{opacity:1}
+.nav-label{font-size:9px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);transition:color 0.2s}
+
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);padding:20px;margin-bottom:12px;transition:box-shadow 0.35s var(--ease-lux),border-color 0.35s ease}
+.card:hover{box-shadow:0 8px 28px rgba(0,0,0,0.35);border-color:var(--border-subtle)}
+.card-title{font-size:10px;font-weight:600;letter-spacing:0.25em;text-transform:uppercase;color:var(--text-dim);margin-bottom:16px}
+
+/* STAT GRID */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.stat-card{background:var(--surface2);border:1px solid var(--border);padding:16px;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;width:2px;height:100%;background:var(--gold)}
+.stat-value{font-size:28px;font-weight:700;color:var(--gold);letter-spacing:-0.02em;line-height:1}
+.stat-label{font-size:10px;color:var(--text-muted);margin-top:6px;letter-spacing:0.1em;line-height:1.4}
+.stat-delta{font-size:10px;font-weight:600;margin-top:4px}
+.stat-delta.up{color:var(--live)}
+.stat-delta.trust{color:var(--trust)}
+.stat-delta.neutral{color:var(--text-dim)}
+
+/* REVENUE BANNER */
+.revenue-banner{background:linear-gradient(135deg,var(--surface-raised),var(--surface-overlay));border:1px solid var(--gold-border);padding:24px 20px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,0.35)}
+.revenue-banner::after{content:'';position:absolute;top:-50%;right:-20%;width:200px;height:200px;background:radial-gradient(circle,var(--gold-glow),transparent 70%)}
+.rev-label{font-size:10px;font-weight:600;letter-spacing:0.3em;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px}
+.rev-amount{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;color:var(--gold);line-height:1;letter-spacing:-0.02em}
+.rev-sub{font-size:11px;color:var(--text-muted);margin-top:6px;letter-spacing:0.1em}
+
+/* CLIENT LIST */
+.client-item{background:var(--surface);border:1px solid var(--border);padding:16px;margin-bottom:8px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all 0.2s;position:relative}
+.client-item:active{background:var(--surface2)}
+.client-item::after{content:'›';position:absolute;right:16px;font-size:18px;color:var(--text-dim)}
+.client-avatar{width:44px;height:44px;background:var(--surface3);border:1px solid var(--gold-dim);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--gold);flex-shrink:0}
+.client-info{flex:1;min-width:0}
+.client-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.client-biz{font-size:11px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.client-right{text-align:right;flex-shrink:0;margin-right:20px}
+.client-revenue{font-size:13px;font-weight:700;color:var(--gold)}
+.tier-badge{display:inline-block;font-size:8px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;padding:2px 8px;margin-top:3px}
+.tier-starter{background:var(--blue-bg);color:var(--blue)}
+.tier-presence{background:var(--trust-muted);color:var(--trust)}
+.tier-full_front_office{background:var(--gold-glow);color:var(--gold)}
+
+/* STATUS BADGE */
+.status-badge{display:inline-flex;align-items:center;gap:5px;font-size:9px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;padding:3px 10px}
+.status-active{background:var(--live-muted);color:var(--live)}
+.status-onboarding{background:var(--blue-bg);color:var(--blue)}
+.status-new{background:var(--gold-glow);color:var(--gold)}
+.status-contacted{background:var(--trust-muted);color:var(--trust)}
+.status-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+
+/* CLIENT DETAIL */
+.detail-header{padding:24px 20px 0;background:var(--surface);border-bottom:1px solid var(--border);margin:-20px -20px 20px}
+.detail-back{font-size:11px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);cursor:pointer;display:flex;align-items:center;gap:6px;padding:16px 0 12px}
+.detail-biz{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--text);margin-bottom:4px}
+.detail-owner{font-size:12px;color:var(--text-muted);letter-spacing:0.1em;margin-bottom:16px}
+.detail-tier-row{display:flex;gap:8px;align-items:center;padding-bottom:20px}
+
+/* SERVICE ROWS */
+.service-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border)}
+.service-row:last-child{border-bottom:none}
+.service-name{font-size:13px;color:var(--text);font-weight:500}
+.service-status{font-size:10px;font-weight:700;letter-spacing:0.1em}
+.service-on{color:var(--live)}
+.service-off{color:var(--text-dim)}
+
+/* LEADS */
+.lead-item{background:var(--surface);border:1px solid var(--border);padding:16px;margin-bottom:8px}
+.lead-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px}
+.lead-biz{font-size:11px;color:var(--text-muted);margin-bottom:8px}
+.lead-meta{display:flex;align-items:center;gap:10px}
+.lead-phone{font-size:11px;color:var(--gold);font-weight:600}
+
+/* SECTION TITLE */
+.section-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:var(--text);margin-bottom:4px}
+.section-sub{font-size:11px;color:var(--text-muted);letter-spacing:0.08em;margin-bottom:20px}
+
+/* LOADING */
+.loading{display:flex;align-items:center;justify-content:center;padding:40px;color:var(--text-dim);font-size:12px;letter-spacing:0.2em}
+.loading::after{content:'';width:16px;height:16px;border:1px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;margin-left:10px}
+
+/* EMPTY */
+.empty{text-align:center;padding:40px 20px;color:var(--text-dim);font-size:12px;letter-spacing:0.15em}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.animate{animation:fadeUp 0.4s ease both}
+.animate-delay-1{animation-delay:0.05s}
+.animate-delay-2{animation-delay:0.1s}
+.animate-delay-3{animation-delay:0.15s}
+.animate-delay-4{animation-delay:0.2s}
+.animate-delay-5{animation-delay:0.25s}
+
+/* DIVIDER */
+.gold-line{height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);margin:16px 0;opacity:0.4}
+
+/* QUICK ACTION BUTTONS */
+.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.action-btn{background:var(--surface2);border:1px solid var(--border);padding:16px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:all 0.2s}
+.action-btn:active{border-color:var(--gold);background:var(--surface3)}
+.action-icon{font-size:24px;display:flex;align-items:center;justify-content:center;opacity:0.7}.action-btn:active .action-icon{opacity:1}
+.action-label{font-size:9px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-muted)}
+</style>
+</head>
+<body class="pantheon-root">
+
+<div class="pantheon-mesh" aria-hidden="true" style="opacity:0.6"></div>
+<div class="pantheon-grain" aria-hidden="true"></div>
+
+<div style="position:relative;z-index:2;display:flex;flex-direction:column;height:100%">
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <div class="top-logo">Presen<em>cy</em></div>
+  <span class="top-page-title" id="pageTitle">Dashboard</span>
+  <div class="top-right">
+    <div class="notif-dot" id="notifDot" style="display:none"></div>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+
+  <!-- HOME PAGE -->
+  <div class="page active" id="page-home">
+    <div class="revenue-banner animate">
+      <div class="rev-label">Monthly Recurring Revenue</div>
+      <div class="rev-amount" id="totalRevenue">$0</div>
+      <div class="rev-sub" id="activeClientCount">Loading...</div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card animate animate-delay-1">
+        <div class="stat-value" id="totalClients">—</div>
+        <div class="stat-label">Active Clients</div>
+        <div class="stat-delta up" id="clientDelta"></div>
+      </div>
+      <div class="stat-card animate animate-delay-2">
+        <div class="stat-value" id="totalLeads">—</div>
+        <div class="stat-label">New Leads</div>
+        <div class="stat-delta up">This month</div>
+      </div>
+      <div class="stat-card animate animate-delay-3">
+        <div class="stat-value" id="totalTexts">—</div>
+        <div class="stat-label">Texts Sent</div>
+        <div class="stat-delta neutral">All clients</div>
+      </div>
+      <div class="stat-card animate animate-delay-4">
+        <div class="stat-value" id="totalReviews">—</div>
+        <div class="stat-label">New Reviews</div>
+        <div class="stat-delta up">This month</div>
+      </div>
+    </div>
+
+    <div class="card animate animate-delay-5">
+      <div class="card-title">Quick Actions</div>
+      <div class="action-grid">
+        <div class="action-btn" onclick="goToPage('clients')">
+          <div class="action-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#D4AF5A" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2"/><path d="M21 20c0-2.2-1.8-4-4-4"/></svg></div>
+          <div class="action-label">View Clients</div>
+        </div>
+        <div class="action-btn" onclick="goToPage('leads')">
+          <div class="action-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#D4AF5A" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="13" y2="13"/></svg></div>
+          <div class="action-label">View Leads</div>
+        </div>
+        <div class="action-btn" onclick="window.open('https://presencyco.com','_blank')">
+          <div class="action-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#D4AF5A" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="3" y1="12" x2="21" y2="12"/><path d="M12 3a15 15 0 014 9 15 15 0 01-4 9 15 15 0 01-4-9 15 15 0 014-9z"/></svg></div>
+          <div class="action-label">Live Site</div>
+        </div>
+        <div class="action-btn" onclick="window.open('https://make.com','_blank')">
+          <div class="action-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#D4AF5A" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="8" height="8" rx="1"/><rect x="14" y="3" width="8" height="8" rx="1"/><rect x="2" y="13" width="8" height="8" rx="1"/><circle cx="18" cy="17" r="3"/><line x1="18" y1="14" x2="18" y2="17"/><line x1="18" y1="17" x2="21" y2="17"/></svg></div>
+          <div class="action-label">Make.com</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLIENTS PAGE -->
+  <div class="page" id="page-clients">
+    <div class="section-title animate">Clients</div>
+    <div class="section-sub animate">Active accounts</div>
+    <div id="clientsList"><div class="loading">Loading clients</div></div>
+  </div>
+
+  <!-- CLIENT DETAIL PAGE -->
+  <div class="page" id="page-detail">
+    <div class="detail-header">
+      <div class="detail-back" onclick="goToPage('clients')">‹ Back to Clients</div>
+      <div class="detail-biz" id="detailBiz">—</div>
+      <div class="detail-owner" id="detailOwner">—</div>
+      <div class="detail-tier-row" id="detailTierRow"></div>
+    </div>
+    <div id="detailStats"></div>
+  </div>
+
+  <!-- LEADS PAGE -->
+  <div class="page" id="page-leads">
+    <div class="section-title animate">Leads</div>
+    <div class="section-sub animate">From presencyco.com contact form</div>
+    <div id="leadsList"><div class="loading">Loading leads</div></div>
+  </div>
+
+  <!-- SETTINGS PAGE -->
+  <div class="page" id="page-settings">
+    <div class="section-title animate">Settings</div>
+    <div class="section-sub animate">Presency platform</div>
+
+    <div class="card animate">
+      <div class="card-title">Platform Links</div>
+      <div class="service-row"><span class="service-name">presencyco.com</span><a href="https://presencyco.com" target="_blank" style="font-size:11px;color:var(--gold);text-decoration:none;font-weight:600">Open →</a></div>
+      <div class="service-row"><span class="service-name">Make.com Scenarios</span><a href="https://make.com" target="_blank" style="font-size:11px;color:var(--gold);text-decoration:none;font-weight:600">Open →</a></div>
+      <div class="service-row"><span class="service-name">Stripe Dashboard</span><a href="https://dashboard.stripe.com" target="_blank" style="font-size:11px;color:var(--gold);text-decoration:none;font-weight:600">Open →</a></div>
+      <div class="service-row"><span class="service-name">Supabase Database</span><a href="https://supabase.com/dashboard" target="_blank" style="font-size:11px;color:var(--gold);text-decoration:none;font-weight:600">Open →</a></div>
+      <div class="service-row"><span class="service-name">GitHub Repo</span><a href="https://github.com/kiing76bb-code/presencyco" target="_blank" style="font-size:11px;color:var(--gold);text-decoration:none;font-weight:600">Open →</a></div>
+      <div class="service-row"><span class="service-name">Figma Assets</span><a href="https://www.figma.com/design/uYmIbNTT9coTKrbgkgvaIn" target="_blank" style="font-size:11px;color:var(--gold);text-decoration:none;font-weight:600">Open →</a></div>
+    </div>
+
+    <div class="card animate animate-delay-1">
+      <div class="card-title">Pricing Tiers</div>
+      <div class="service-row"><span class="service-name">Starter</span><span style="color:var(--gold);font-weight:700;font-size:13px">$397/mo</span></div>
+      <div class="service-row"><span class="service-name">Presence</span><span style="color:var(--gold);font-weight:700;font-size:13px">$697/mo</span></div>
+      <div class="service-row"><span class="service-name">Full Front Office</span><span style="color:var(--gold);font-weight:700;font-size:13px">$1,197/mo</span></div>
+    </div>
+
+    <div class="card animate animate-delay-2">
+      <div class="card-title">Stripe Payment Links</div>
+      <div class="service-row">
+        <span class="service-name">Starter Link</span>
+        <span style="font-size:10px;color:var(--gold);cursor:pointer;font-weight:600" onclick="copyText('https://buy.stripe.com/test_fZu5kF9kH391gTV3Xb1wY00')">Copy ↗</span>
+      </div>
+      <div class="service-row">
+        <span class="service-name">Presence Link</span>
+        <span style="font-size:10px;color:var(--gold);cursor:pointer;font-weight:600" onclick="copyText('https://buy.stripe.com/test_bJe7sNdAXaBtavx8dr1wY01')">Copy ↗</span>
+      </div>
+      <div class="service-row">
+        <span class="service-name">Full Front Office Link</span>
+        <span style="font-size:10px;color:var(--gold);cursor:pointer;font-weight:600" onclick="copyText('https://buy.stripe.com/test_00w28teF1bFxdHJ65j1wY02')">Copy ↗</span>
+      </div>
+    </div>
+
+    <div style="text-align:center;padding:20px 0;font-size:10px;color:var(--text-dim);letter-spacing:0.2em">
+      PRESENCY · AXIS CREATIVE LLC · LAS VEGAS, NV
+    </div>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <div class="nav-item active" onclick="goToPage('home')" id="nav-home">
+    <div class="nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D4AF5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12L12 3l9 9"/><path d="M5 10v9a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1v-9"/></svg></div>
+    <div class="nav-label">Home</div>
+  </div>
+  <div class="nav-item" onclick="goToPage('clients')" id="nav-clients">
+    <div class="nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D4AF5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2"/><path d="M21 20c0-2.2-1.8-4-4-4"/></svg></div>
+    <div class="nav-label">Clients</div>
+  </div>
+  <div class="nav-item" onclick="goToPage('leads')" id="nav-leads">
+    <div class="nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D4AF5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="13" y2="13"/></svg></div>
+    <div class="nav-label">Leads</div>
+  </div>
+  <div class="nav-item" onclick="goToPage('settings')" id="nav-settings">
+    <div class="nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D4AF5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg></div>
+    <div class="nav-label">Settings</div>
+  </div>
+</nav>
+
+</div>
+
+<script>
+const SUPABASE_URL = 'https://mhtqvuglujodpffpmmhe.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1odHF2dWdsdWpvZHBmZnBtbWhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyOTg0NzAsImV4cCI6MjA5NTg3NDQ3MH0.01DA51ogwf1lHlkl_0cjoRzZZRquCoHEB2mlttoXeRk';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let allClients = [];
+let allStats = [];
+let currentPage = 'home';
+
+// PAGE NAV
+function goToPage(page, clientId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+  const titles = {home:'Dashboard',clients:'Clients',detail:'Client',leads:'Leads',settings:'Settings'};
+  document.getElementById('pageTitle').textContent = titles[page] || 'Presency';
+
+  if (page === 'detail' && clientId) {
+    loadClientDetail(clientId);
+    document.getElementById('page-detail').classList.add('active');
+  } else {
+    document.getElementById('page-' + page).classList.add('active');
+    const navEl = document.getElementById('nav-' + page);
+    if (navEl) navEl.classList.add('active');
+  }
+
+  currentPage = page;
+  document.querySelector('.main').scrollTo(0, 0);
+}
+
+// TIER DISPLAY
+function tierLabel(t) {
+  const map = {'starter':'Starter','presence':'Presence','full_front_office':'Full Front Office'};
+  return map[t] || t;
+}
+function tierBadge(t) {
+  return `<span class="tier-badge tier-${t}">${tierLabel(t)}</span>`;
+}
+function initials(name) {
+  return name ? name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase() : '?';
+}
+
+// LOAD HOME
+async function loadHome() {
+  const { data: clients } = await sb.from('clients').select('*');
+  const { data: stats } = await sb.from('client_stats').select('*');
+  const { data: leads } = await sb.from('leads').select('*').eq('status','new');
+
+  allClients = clients || [];
+  allStats = stats || [];
+
+  const totalRev = allClients.reduce((s, c) => s + (c.monthly_revenue || 0), 0);
+  document.getElementById('totalRevenue').textContent = '$' + totalRev.toLocaleString();
+  document.getElementById('activeClientCount').textContent = allClients.length + ' active client' + (allClients.length !== 1 ? 's' : '') + ' · Axis Creative LLC';
+  document.getElementById('totalClients').textContent = allClients.length;
+  document.getElementById('totalLeads').textContent = (leads || []).length;
+
+  const totalTexts = allStats.reduce((s, st) => s + (st.texts_sent || 0), 0);
+  const totalNewReviews = allStats.reduce((s, st) => s + (st.new_reviews || 0), 0);
+  document.getElementById('totalTexts').textContent = totalTexts;
+  document.getElementById('totalReviews').textContent = totalNewReviews;
+
+  if ((leads || []).length > 0) {
+    document.getElementById('notifDot').style.display = 'block';
+  }
+}
+
+// LOAD CLIENTS
+async function loadClients() {
+  const { data: clients } = await sb.from('clients').select('*').order('created_at', {ascending: false});
+  allClients = clients || [];
+
+  const list = document.getElementById('clientsList');
+  if (!allClients.length) {
+    list.innerHTML = '<div class="empty">NO CLIENTS YET<br>Close your first deal!</div>';
+    return;
+  }
+
+  list.innerHTML = allClients.map((c, i) => `
+    <div class="client-item animate animate-delay-${Math.min(i+1,5)}" onclick="goToPage('detail','${c.id}')">
+      <div class="client-avatar">${initials(c.owner_name || c.business_name)}</div>
+      <div class="client-info">
+        <div class="client-name">${c.business_name}</div>
+        <div class="client-biz">${c.owner_name || ''} · ${c.industry || ''}</div>
+      </div>
+      <div class="client-right">
+        <div class="client-revenue">$${(c.monthly_revenue || 0).toLocaleString()}</div>
+        ${tierBadge(c.tier || 'starter')}
+      </div>
+    </div>
+  `).join('');
+}
+
+// LOAD CLIENT DETAIL
+async function loadClientDetail(clientId) {
+  const client = allClients.find(c => c.id === clientId);
+  if (!client) return;
+
+  document.getElementById('detailBiz').textContent = client.business_name;
+  document.getElementById('detailOwner').textContent = (client.owner_name || '') + (client.phone ? ' · ' + client.phone : '');
+  document.getElementById('detailTierRow').innerHTML = tierBadge(client.tier || 'starter') +
+    `<span class="status-badge status-${client.status || 'active'}" style="margin-left:8px"><span class="status-dot"></span>${client.status || 'active'}</span>` +
+    `<span style="margin-left:auto;font-size:13px;font-weight:700;color:var(--gold)">$${(client.monthly_revenue||0).toLocaleString()}/mo</span>`;
+
+  const { data: stats } = await sb.from('client_stats').select('*').eq('client_id', clientId).order('month', {ascending: false}).limit(1);
+  const s = (stats && stats[0]) || {};
+
+  const tier = client.tier || 'starter';
+  const hasReviews = ['presence','full_front_office'].includes(tier);
+  const hasChat = ['presence','full_front_office'].includes(tier);
+  const hasSocial = tier === 'full_front_office';
+
+  document.getElementById('detailStats').innerHTML = `
+    <div class="stat-grid animate">
+      <div class="stat-card">
+        <div class="stat-value">${s.missed_calls_recovered || 0}</div>
+        <div class="stat-label">Calls Recovered</div>
+        <div class="stat-delta up">This month</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">${s.texts_sent || 0}</div>
+        <div class="stat-label">Texts Sent</div>
+        <div class="stat-delta neutral">Auto-fired</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">${s.gbp_views || 0}</div>
+        <div class="stat-label">GBP Views</div>
+        <div class="stat-delta up">Profile views</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">${s.new_reviews || 0}</div>
+        <div class="stat-label">New Reviews</div>
+        <div class="stat-delta neutral">${s.total_reviews || 0} total · ${s.star_rating || 0}★</div>
+      </div>
+      ${hasChat ? `
+      <div class="stat-card">
+        <div class="stat-value">${s.chat_conversations || 0}</div>
+        <div class="stat-label">Chat Convos</div>
+        <div class="stat-delta up">${s.chat_leads || 0} leads captured</div>
+      </div>` : ''}
+      ${hasSocial ? `
+      <div class="stat-card">
+        <div class="stat-value">${s.social_posts || 0}</div>
+        <div class="stat-label">Posts Published</div>
+        <div class="stat-delta up">${(s.social_reach || 0).toLocaleString()} reach</div>
+      </div>` : ''}
+    </div>
+
+    <div class="card animate animate-delay-1">
+      <div class="card-title">Active Services</div>
+      <div class="service-row">
+        <span class="service-name">Missed Call Text-Back</span>
+        <span class="service-status service-on">● LIVE</span>
+      </div>
+      <div class="service-row">
+        <span class="service-name">Google Business Profile</span>
+        <span class="service-status service-on">● LIVE</span>
+      </div>
+      <div class="service-row">
+        <span class="service-name">Review Request Automation</span>
+        <span class="service-status ${hasReviews ? 'service-on">● LIVE' : 'service-off">○ UPGRADE'}"></span>
+      </div>
+      <div class="service-row">
+        <span class="service-name">AI Chat Widget</span>
+        <span class="service-status ${hasChat ? 'service-on">● LIVE' : 'service-off">○ UPGRADE'}"></span>
+      </div>
+      <div class="service-row">
+        <span class="service-name">Social Media Auto-Poster</span>
+        <span class="service-status ${hasSocial ? 'service-on">● LIVE' : 'service-off">○ UPGRADE'}"></span>
+      </div>
+    </div>
+
+    <div class="card animate animate-delay-2">
+      <div class="card-title">Contact</div>
+      <div class="service-row"><span class="service-name">Phone</span><span style="color:var(--gold);font-size:13px">${client.phone || '—'}</span></div>
+      <div class="service-row"><span class="service-name">Email</span><span style="color:var(--gold);font-size:12px">${client.email || '—'}</span></div>
+      <div class="service-row"><span class="service-name">City</span><span style="color:var(--text-muted);font-size:13px">${client.city || 'Las Vegas'}</span></div>
+      <div class="service-row"><span class="service-name">Industry</span><span style="color:var(--text-muted);font-size:13px">${client.industry || '—'}</span></div>
+    </div>
+  `;
+}
+
+// LOAD LEADS
+async function loadLeads() {
+  const { data: leads } = await sb.from('leads').select('*').order('created_at', {ascending: false});
+  const list = document.getElementById('leadsList');
+
+  if (!leads || !leads.length) {
+    list.innerHTML = '<div class="empty">NO LEADS YET<br>They\'ll show up here when the form fires</div>';
+    return;
+  }
+
+  list.innerHTML = leads.map((l, i) => `
+    <div class="lead-item animate animate-delay-${Math.min(i+1,5)}">
+      <div class="lead-name">${l.name || 'Unknown'}</div>
+      <div class="lead-biz">${l.business || ''}</div>
+      <div class="lead-meta">
+        <span class="lead-phone">${l.phone || ''}</span>
+        <span class="status-badge status-${l.status || 'new'}"><span class="status-dot"></span>${l.status || 'new'}</span>
+      </div>
+      ${l.service ? `<div style="margin-top:8px;font-size:10px;color:var(--text-dim);letter-spacing:0.1em">${l.service}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+// COPY
+function copyText(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    const el = event.target;
+    const orig = el.textContent;
+    el.textContent = 'Copied!';
+    setTimeout(() => el.textContent = orig, 1500);
+  });
+}
+
+// OBSERVE PAGE CHANGES TO LAZY LOAD
+const pageObserver = {
+  clients: false,
+  leads: false
+};
+
+const origGoToPage = goToPage;
+window.goToPage = function(page, clientId) {
+  origGoToPage(page, clientId);
+  if (page === 'clients' && !pageObserver.clients) {
+    loadClients();
+    pageObserver.clients = true;
+  }
+  if (page === 'leads' && !pageObserver.leads) {
+    loadLeads();
+    pageObserver.leads = true;
+  }
+};
+
+// INIT
+loadHome();
+
+// PWA install prompt
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  window._pwaPrompt = e;
+});
+</script>
+</body>
+</html>

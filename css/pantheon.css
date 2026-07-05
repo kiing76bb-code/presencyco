@@ -1,0 +1,219 @@
+/**
+ * Pantheon Treatment — Presency cinematic layer
+ * Ambient depth, mesh glow, grain, purposeful motion.
+ * Requires tokens.css loaded first.
+ */
+
+/* ── Global atmosphere ─────────────────────────────────────────── */
+.pantheon-root {
+  position: relative;
+  isolation: isolate;
+}
+
+.pantheon-grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.32;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  mix-blend-mode: overlay;
+}
+
+.pantheon-mesh {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 90% 70% at 50% -10%, var(--gold-glow) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 50% at 85% 60%, var(--trust-muted) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 40% at 10% 80%, rgba(193, 123, 92, 0.06) 0%, transparent 45%);
+  animation: pantheonBreathe 12s var(--ease-lux) infinite;
+}
+
+.pantheon-constellation {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.45;
+}
+
+.pantheon-constellation line {
+  stroke: var(--platinum);
+  stroke-width: 0.5;
+  opacity: 0.12;
+}
+
+.pantheon-constellation circle {
+  fill: var(--gold);
+  opacity: 0.35;
+}
+
+/* ── Nav glass ─────────────────────────────────────────────────── */
+nav.pantheon-nav {
+  backdrop-filter: blur(0);
+  -webkit-backdrop-filter: blur(0);
+}
+
+nav.pantheon-nav.scrolled {
+  background: rgba(7, 8, 10, 0.88);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border-bottom-color: var(--border-subtle);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+/* ── Hero cinematic ────────────────────────────────────────────── */
+.pantheon-hero {
+  position: relative;
+}
+
+.pantheon-hero .hero-headline em {
+  background: linear-gradient(
+    100deg,
+    var(--gold) 20%,
+    var(--gold-light) 45%,
+    var(--platinum) 55%,
+    var(--gold) 80%
+  );
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: pantheonGoldSheen 9s ease-in-out infinite;
+}
+
+.pantheon-hero .hero-bg {
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 42%, var(--gold-glow) 0%, transparent 68%),
+    radial-gradient(ellipse 40% 30% at 72% 28%, var(--live-muted) 0%, transparent 70%);
+  animation: pantheonBreathe 8s ease-in-out infinite;
+}
+
+/* ── Cards & surfaces ──────────────────────────────────────────── */
+.pantheon-card {
+  position: relative;
+  transition: transform 0.45s var(--ease-lux), border-color 0.35s ease, box-shadow 0.45s var(--ease-lux);
+}
+
+.pantheon-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--gold-border);
+  box-shadow:
+    0 20px 48px rgba(0, 0, 0, 0.45),
+    0 0 40px var(--gold-glow),
+    inset 0 1px 0 var(--gold-border);
+}
+
+.pantheon-rim-top::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold), var(--platinum), var(--gold), transparent);
+  opacity: 0.7;
+}
+
+/* ── Buttons ───────────────────────────────────────────────────── */
+.pantheon-btn-primary {
+  position: relative;
+  overflow: hidden;
+}
+
+.pantheon-btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  transform: skewX(-18deg);
+  transition: left 0.75s var(--ease-lux);
+  pointer-events: none;
+}
+
+.pantheon-btn-primary:hover::after {
+  left: 140%;
+}
+
+/* ── Section reveals ───────────────────────────────────────────── */
+.pantheon-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.8s var(--ease-lux), transform 0.8s var(--ease-lux);
+}
+
+.pantheon-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── ROI calculator glow ───────────────────────────────────────── */
+.pantheon-roi {
+  box-shadow: 0 0 0 1px var(--urgency-border), 0 24px 64px rgba(0, 0, 0, 0.4);
+}
+
+.pantheon-roi .roi-loss {
+  text-shadow: 0 0 40px var(--urgency-muted);
+}
+
+/* ── Proof stats pulse ───────────────────────────────────────────── */
+.pantheon-stat {
+  position: relative;
+}
+
+.pantheon-stat .proof-stat {
+  text-shadow: 0 0 32px var(--gold-glow);
+}
+
+/* ── Dividers ──────────────────────────────────────────────────── */
+.pantheon-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--platinum-muted), var(--gold-border), var(--platinum-muted), transparent);
+  margin: 0 auto;
+  max-width: 720px;
+  opacity: 0.6;
+}
+
+/* ── Keyframes ─────────────────────────────────────────────────── */
+@keyframes pantheonBreathe {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.02); }
+}
+
+@keyframes pantheonGoldSheen {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes pantheonNodePulse {
+  0%, 100% { opacity: 0.25; r: 2; }
+  50% { opacity: 0.65; r: 3; }
+}
+
+/* ── Reduced motion ────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .pantheon-mesh,
+  .pantheon-hero .hero-bg,
+  .pantheon-hero .hero-headline em,
+  .live-dot,
+  .notif-dot {
+    animation: none !important;
+  }
+
+  .pantheon-card:hover {
+    transform: none;
+  }
+
+  .pantheon-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
