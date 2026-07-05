@@ -428,6 +428,39 @@ select option{background:var(--surface2);color:var(--text)}
       </div>
     </div>
 
+    <!-- SECTION: REVENUE RECOVERY (booking link for text-back) -->
+    <div class="section conditional" id="booking-section">
+      <div class="section-title">24/7 Revenue Recovery</div>
+
+      <div class="question">
+        <div class="q-header">
+          <div class="q-num">↳</div>
+          <div class="q-label">Online booking link</div>
+          <div class="q-optional">Recommended</div>
+        </div>
+        <div class="q-help">Cal.com, Square Appointments, Google booking, or any link where customers can schedule. We embed this in every missed-call text-back.</div>
+        <input type="url" id="booking_url" name="booking_url" placeholder="https://cal.com/yourbusiness or https://book.yoursite.com">
+      </div>
+
+      <div class="question">
+        <div class="q-header">
+          <div class="q-num">↳</div>
+          <div class="q-label">No booking link yet?</div>
+        </div>
+        <div class="radio-group">
+          <div class="radio-item" onclick="selectRadio(this,'booking_setup','have_link')">
+            <input type="radio" name="booking_setup" value="have_link"><label>I have a link — entered above</label>
+          </div>
+          <div class="radio-item" onclick="selectRadio(this,'booking_setup','need_cal')">
+            <input type="radio" name="booking_setup" value="need_cal"><label>Set up Cal.com free tier for me during onboarding</label>
+          </div>
+          <div class="radio-item" onclick="selectRadio(this,'booking_setup','phone_only')">
+            <input type="radio" name="booking_setup" value="phone_only"><label>No online booking — text-back will ask them to call back</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- SECTION 4: SOCIAL MEDIA (shows for presence, ffo, or custom with social) -->
     <div class="section conditional" id="social-section">
       <div class="section-title">Social Media</div>
@@ -688,6 +721,7 @@ if(urlPlan){
     if(el)selectPackage(el,urlPlan);
   }
 }
+updateBookingSection();
 
 function selectPackage(card,plan){
   document.querySelectorAll('.pkg-card,.pkg-custom').forEach(c=>{c.classList.remove('selected')});
@@ -705,7 +739,21 @@ function selectPackage(card,plan){
 
   const showSocial=plan==='custom';
   showEl('social-section',showSocial);
+  updateBookingSection();
   updateProgress();
+}
+
+function hasRevenueRecovery(){
+  if(selectedPlan==='starter'||selectedPlan==='presence'||selectedPlan==='full_front_office')return true;
+  if(selectedPlan==='custom'){
+    const cb=document.querySelector('[name=svc_missed_call]');
+    return cb&&cb.checked;
+  }
+  return false;
+}
+
+function updateBookingSection(){
+  showEl('booking-section',hasRevenueRecovery());
 }
 
 function toggleService(e,item,name,price){
@@ -714,6 +762,7 @@ function toggleService(e,item,name,price){
   cb.checked=!cb.checked;
   item.classList.toggle('selected',cb.checked);
   updateBYOTotal();
+  if(name==='svc_missed_call')updateBookingSection();
 }
 
 function updateBYOTotal(){

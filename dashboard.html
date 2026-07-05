@@ -421,10 +421,10 @@ async function loadClientDetail(clientId) {
   const { data: stats } = await sb.from('client_stats').select('*').eq('client_id', clientId).order('month', {ascending: false}).limit(1);
   const s = (stats && stats[0]) || {};
 
-  const tier = client.tier || 'starter';
+  const tier = client.tier || client.subscription_status || 'starter';
   const hasReviews = ['presence','full_front_office'].includes(tier);
   const hasChat = ['presence','full_front_office'].includes(tier);
-  const hasSocial = tier === 'full_front_office';
+  const hasAiVisibility = tier === 'full_front_office';
 
   document.getElementById('detailStats').innerHTML = `
     <div class="stat-grid animate">
@@ -454,26 +454,20 @@ async function loadClientDetail(clientId) {
         <div class="stat-label">Chat Convos</div>
         <div class="stat-delta up">${s.chat_leads || 0} leads captured</div>
       </div>` : ''}
-      ${hasSocial ? `
-      <div class="stat-card">
-        <div class="stat-value">${s.social_posts || 0}</div>
-        <div class="stat-label">Posts Published</div>
-        <div class="stat-delta up">${(s.social_reach || 0).toLocaleString()} reach</div>
-      </div>` : ''}
     </div>
 
     <div class="card animate animate-delay-1">
       <div class="card-title">Active Services</div>
       <div class="service-row">
-        <span class="service-name">Missed Call Text-Back</span>
+        <span class="service-name">24/7 Revenue Recovery</span>
         <span class="service-status service-on">● LIVE</span>
       </div>
       <div class="service-row">
-        <span class="service-name">Google Business Profile</span>
+        <span class="service-name">Google Business Domination</span>
         <span class="service-status service-on">● LIVE</span>
       </div>
       <div class="service-row">
-        <span class="service-name">Review Request Automation</span>
+        <span class="service-name">Reputation Management</span>
         <span class="service-status ${hasReviews ? 'service-on">● LIVE' : 'service-off">○ UPGRADE'}"></span>
       </div>
       <div class="service-row">
@@ -481,8 +475,8 @@ async function loadClientDetail(clientId) {
         <span class="service-status ${hasChat ? 'service-on">● LIVE' : 'service-off">○ UPGRADE'}"></span>
       </div>
       <div class="service-row">
-        <span class="service-name">Social Media Auto-Poster</span>
-        <span class="service-status ${hasSocial ? 'service-on">● LIVE' : 'service-off">○ UPGRADE'}"></span>
+        <span class="service-name">AI Search Visibility</span>
+        <span class="service-status ${hasAiVisibility ? 'service-on">● LIVE' : 'service-off">○ UPGRADE'}"></span>
       </div>
     </div>
 
@@ -490,6 +484,7 @@ async function loadClientDetail(clientId) {
       <div class="card-title">Contact</div>
       <div class="service-row"><span class="service-name">Phone</span><span style="color:var(--gold);font-size:13px">${client.phone || '—'}</span></div>
       <div class="service-row"><span class="service-name">Email</span><span style="color:var(--gold);font-size:12px">${client.email || '—'}</span></div>
+      <div class="service-row"><span class="service-name">Booking Link</span><span style="color:var(--trust);font-size:12px;word-break:break-all">${client.booking_url || '— pending setup'}</span></div>
       <div class="service-row"><span class="service-name">City</span><span style="color:var(--text-muted);font-size:13px">${client.city || 'Las Vegas'}</span></div>
       <div class="service-row"><span class="service-name">Industry</span><span style="color:var(--text-muted);font-size:13px">${client.industry || '—'}</span></div>
     </div>
